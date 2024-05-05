@@ -4,7 +4,8 @@ import * as THREE from 'three';
 //a container for other objects
 const scene = new THREE.Scene();
 
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); // w, h, depth
+// add objects to the scene
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); // width, height, depth
 const cubeMaterial = new THREE.MeshBasicMaterial({ color: '#e0b90b' });
 
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
@@ -12,7 +13,7 @@ const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 //making it visible in the 3D environment.
 scene.add(cubeMesh);
 
-//initialize the camera |
+//initialize the camera
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
@@ -23,11 +24,12 @@ const camera = new THREE.PerspectiveCamera(
 
 //now position the camera to see the Mesh
 camera.position.z = 5;
-scene.add(camera);
 
-// initialize the renderer
+//initialize the renderer
 const canvas = document.querySelector('canvas.threejs');
-const renderer = new THREE.WebGLRenderer({ canvas });
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+});
 
 // set the size of the renderer's output canvas
 renderer.setSize(window.innerWidth, window.innerHeight);
