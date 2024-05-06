@@ -1,12 +1,15 @@
 //import an entire module as a single object, under the name "THREE"
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 //a container for other objects
 const scene = new THREE.Scene();
 
 //add objects to the scene
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); // width, height, depth
-const cubeMaterial = new THREE.MeshBasicMaterial({ color: '#e0b90b' });
+const cubeMaterial = new THREE.MeshBasicMaterial({
+  color: '#e0b90b',
+});
 
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
@@ -15,9 +18,9 @@ scene.add(cubeMesh);
 
 //initialize the camera
 const camera = new THREE.PerspectiveCamera(
-  75,
+  45,
   window.innerWidth / window.innerHeight, // actual screen size
-  0.1,  //if U wanna see everything keep it smaller 0.00001 but stick with reasonable numbers like 0.1 or 0.5
+  0.1,
   200
 );
 //so far you can imagine that's camera is inside of the Mesh
@@ -33,7 +36,28 @@ const renderer = new THREE.WebGLRenderer({
 
 //set the size of the renderer's output canvas
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.render(scene, camera);
+
+//initialize the controls | read document for more
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.8; //default is "0.05"
+controls.autoRotate = true;
+controls.autoRotateSpeed = 10; //default is "2"
+controls.enableZoom = true; //default is "false"
+
+//loop through our obj - make it animated
+const renderLoop = () => {
+  //call update when enabling damping
+  controls.update();
+
+  //anytime U made a change to the scene, do it before calling the render
+  renderer.render(scene, camera);
+
+  window.requestAnimationFrame(renderLoop); //60frames per second experience
+  //wait until you're able to produce this frame and then call myself again
+};
+
+renderLoop();
 
 /* ========================= Mesh() ==========================
 - Mesh is a fundamental building block for creating 3D objects. 
@@ -72,12 +96,19 @@ renderer.render(scene, camera);
 */
 
 /* ======================= WebGLRenderer() =======================
+?- WebGL IS A JavaScript API for rendering 3D graphics in a web browser using the GPU
+
+- WebGL provides a language to talk to the GPU and instruct it on what to render
+?- GPU:
+  Graphic Processing Unit
+  a special type of hardware that can run simple calculations in parallel
+  designed to handle the demands of rendering 3D graphics
+
 - The WebGLRenderer is a crucial component in Three.js that enables rendering 3D graphics using WebGL, a web standard for high-performance graphics rendering.
 
 - it leverages the power of WebGL to render complex 3D scenes efficiently in a web browser. 
 - WebGL provides direct access to the GPU, allowing for hardware-accelerated rendering, which is essential for achieving smooth and visually appealing 3D graphics.
 */
-
 
 /* ======================= near & far vs position =======================
 ? what is the "far-prop" that I can't see this box?
@@ -86,4 +117,22 @@ renderer.render(scene, camera);
 
 ? what is the "near-prop" that I can't see this box?
 - fro example: "5" -> since we set the {position to 5} it means the camera is positioned 5 units away and that's the "center of the object" so if we set {near to 5} we can't see anything but since the object in cubeGeometry sets as 1 by 1 by 1, it still exists within 4.5 units of the actual camera
+*/
+
+/* ======================= OrbitControls() ======================= 
+? OrbitControls(camera, domElement)
+- Orbit controls allow the camera to orbit(rotate) around a target.
+
+? enableDamping:
+- refers to a mechanism that introduces a gradual decrease in a certain parameter or behavior over time.
+
+- When damping is enabled, it introduces a smoothing effect to the movement of the camera controlled by OrbitControls. 
+- This can be particularly useful when you want to avoid abrupt or jerky movements, providing a more fluid and natural interaction experience for users.
+*/
+
+/* ======================= requestAnimationFrame() ======================= 
+- used in web development to optimize animations and improve performance by synchronizing them with the browser's repaint cycle.
+
+- is a method provided by the browser that allows developers to schedule an animation frame to be rendered on the next repaint cycle of the browser. 
+- This is crucial for creating smooth and efficient animations on web pages as it ensures that the animations are synchronized with the display refresh rate, leading to better performance and visual quality.
 */
