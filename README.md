@@ -5,8 +5,9 @@
 
 > To begin with, it is important to note that, these projects have been sourced from an exceptional Three.js Bootcamp: Zero to Mastery Course. <br/>
  
-> 👤 Instructed by a _proficient_ and _expert educator_, ` "Jesse Zhou". `
+> 👤 Instructed by a _proficient_ and _expert educator_, ` "Jesse Zhou". ` 
 
+ <br/>
  
 ### 🧩 _Three.js_ is a JavaScript library that is primarily used for creating 3D computer graphics in a web browser.
 - #### _It provides a wide range of tools and functionalities for developers to build interactive 3D experiences on the web, ranging from simple animations to complex visualizations._
@@ -22,7 +23,7 @@
 <br/> <br/>
 
  ###  _Projects_ &nbsp; <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif" alt="🚀" width="28" >  
- > ⒈ _First Scene_ = <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _Three.js Fundamentals_ } <br/>
+ > ⒈ _Spinning Cube_ = <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _Three.js Fundamentals_ } <br/>
  
  > ⒉ _....._ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _......_ } <br/>
  
@@ -46,8 +47,8 @@
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
-<!--===================== First Scene =============================-->
-### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Laptop.webp" alt="Laptop" width="35" height="30"  /> &nbsp; _First Scene_  &nbsp; <img src="https://skillicons.dev/icons?i=threejs" height="30" alt="nextjs logo"  />
+<!--===================== Spinning Cube =============================-->
+### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Laptop.webp" alt="Laptop" width="35" height="30"  /> &nbsp; _Spinning Cube_  &nbsp; <img src="https://skillicons.dev/icons?i=threejs" height="30" alt="nextjs logo"  />
 
 #### For this project, my goal is on covering the Basic and Fundamental Concepts of Three.js. <br/><br/>
 
