@@ -17,23 +17,23 @@ const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 scene.add(cubeMesh);
 
 //initialize the camera
-// const camera = new THREE.PerspectiveCamera(
-//   45,
-//   window.innerWidth / window.innerHeight, // actual screen size
-//   0.1,
-//   200
-// ); 
-//so far you can imagine that's camera is inside of the Mesh
-
-const aspectRatio = window.innerWidth / window.innerHeight;
-const camera = new THREE.OrthographicCamera(
-  -1 * aspectRatio,
-  1 * aspectRatio,
-  1,
-  -1,
+const camera = new THREE.PerspectiveCamera(
+  45,
+  window.innerWidth / window.innerHeight, // actual screen size
   0.1,
   200
 );
+//so far you can imagine that's camera is inside of the Mesh
+
+// const aspectRatio = window.innerWidth / window.innerHeight;
+// const camera = new THREE.OrthographicCamera(
+//   -1 * aspectRatio,
+//   1 * aspectRatio,
+//   1,
+//   -1,
+//   0.1,
+//   200
+// );
 
 //now position the camera to see the Mesh
 camera.position.z = 5; // 5 units or 5 meters away
@@ -45,24 +45,30 @@ const renderer = new THREE.WebGLRenderer({
 });
 
 //set the size of the renderer's output canvas
-renderer.setSize(window.innerWidth, window.innerHeight);
 
 //initialize the controls | read document for more
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.8; //default is "0.05"
 controls.autoRotate = true;
-controls.autoRotateSpeed = 10; //default is "2"
+controls.autoRotateSpeed = 7; //default is "2"
 controls.enableZoom = true; //default is "false"
+
+// resize the camera aspectRatio only when resizing the window, so we don't have to call it on every frame
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+
+  //Must be called after any change of parameters.
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 //loop through our obj - make it animated
 const renderLoop = () => {
-  //call update when enabling damping
   controls.update();
 
   //anytime U made a change to the scene, do it before calling the render
   renderer.render(scene, camera);
-
   window.requestAnimationFrame(renderLoop); //60frames per second experience
   //wait until you're able to produce this frame and then call myself again
 };
@@ -160,4 +166,13 @@ renderLoop();
 ?        1 * aspectRatio,  <- right
 -> adjusting the horizontal viewing range of the camera to match the aspect ratio of the window. 
 - This adjustment ensures that objects rendered on screen are not distorted or stretched inappropriately.
+*/
+
+/* ============ updateProjectionMatrix() & update() ==================
+- is used to recalculate the camera's projection matrix after any changes to the camera's parameters, such as aspect ratio or field of view. 
+- This ensures that the camera's view frustum and perspective are updated correctly to reflect the changes in the scene.
+
+?- controls.update() 
+- it updates the state of the controls, including any damping effects or auto-rotation settings that have been configured.
+
 */
