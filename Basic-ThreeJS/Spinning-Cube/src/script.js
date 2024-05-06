@@ -17,13 +17,23 @@ const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 scene.add(cubeMesh);
 
 //initialize the camera
-const camera = new THREE.PerspectiveCamera(
-  45,
-  window.innerWidth / window.innerHeight, // actual screen size
+// const camera = new THREE.PerspectiveCamera(
+//   45,
+//   window.innerWidth / window.innerHeight, // actual screen size
+//   0.1,
+//   200
+// ); 
+//so far you can imagine that's camera is inside of the Mesh
+
+const aspectRatio = window.innerWidth / window.innerHeight;
+const camera = new THREE.OrthographicCamera(
+  -1 * aspectRatio,
+  1 * aspectRatio,
+  1,
+  -1,
   0.1,
   200
 );
-//so far you can imagine that's camera is inside of the Mesh
 
 //now position the camera to see the Mesh
 camera.position.z = 5; // 5 units or 5 meters away
@@ -135,4 +145,19 @@ renderLoop();
 
 - is a method provided by the browser that allows developers to schedule an animation frame to be rendered on the next repaint cycle of the browser. 
 - This is crucial for creating smooth and efficient animations on web pages as it ensures that the animations are synchronized with the display refresh rate, leading to better performance and visual quality.
+*/
+
+/* ===================== OrthographicCamera() ========================
+- Orthographic cameras are defined by a rectangular frustum (the viewing volume) 
+?- OrthographicCamera(left, right, top, bottom, near, far)
+
+- is a type of camera that is used to create a parallel projection, as opposed to a perspective projection. 
+
+- This means that objects in the scene will appear the same size regardless of their distance from the camera, which can be useful for certain types of applications such as "architectural visualization" or "2D games".
+
+? why we multiplied left and right to aspectRatio?  
+?       -1 * aspectRatio,  <- left
+?        1 * aspectRatio,  <- right
+-> adjusting the horizontal viewing range of the camera to match the aspect ratio of the window. 
+- This adjustment ensures that objects rendered on screen are not distorted or stretched inappropriately.
 */
