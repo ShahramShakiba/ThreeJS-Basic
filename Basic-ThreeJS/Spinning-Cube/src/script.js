@@ -58,10 +58,10 @@ renderer.setPixelRatio(maxPixelRatio);
 /*====================== OrbitControls =======================*/
 //initialize the controls
 const controls = new OrbitControls(camera, canvas);
-// controls.enableDamping = true;
+controls.enableDamping = true;
 // controls.dampingFactor = 0.8; //default is "0.05"
-// controls.autoRotate = true;
-// controls.autoRotateSpeed = 7; //default is "2"
+controls.autoRotate = true;
+controls.autoRotateSpeed = 7; //default is "2"
 controls.enableZoom = true; //default is "false"
 
 /*============= resize the camera aspectRatio  ================*/
@@ -74,24 +74,8 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-/*======================= Clock() ============================*/
-//keep track of time
-const clock = new THREE.Clock();
-let previousTime = 0;
-
 /*============== render loop - make it animated ==============*/
 const renderLoop = () => {
-  const currentTime = clock.getElapsedTime();
-  const delta = currentTime - previousTime;
-  previousTime = currentTime;
-  //subsequent iteration of the renderLoop can accurately calculate the elapsed time since the last frame. This allows for "smooth animation"
-
-  cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 25;
-
-  //generates a wave-like pattern that swing back and forth between -1 and 1 as its input varies
-  cubeMesh.scale.x = Math.sin(currentTime) * 7 + 2;
-  cubeMesh.position.x = Math.sin(currentTime) + 2;
-
   controls.update();
   renderer.render(scene, camera);
   window.requestAnimationFrame(renderLoop);
@@ -288,4 +272,62 @@ scene.add(group);
 - Quaternions are used in three.js to represent "rotations".
 
 - Iterating through a Quaternion instance will yield its components (x, y, z, w) in the corresponding order.
+*/
+
+/* ====================== Make it Animated ======================== 
+?
+//keep track of time | Clock()
+const clock = new THREE.Clock();
+let previousTime = 0;
+
+const renderLoop = () => {
+  const currentTime = clock.getElapsedTime();
+  const delta = currentTime - previousTime;
+  previousTime = currentTime;
+ ? //subsequent iteration of the renderLoop can accurately calculate the elapsed time since the last frame. This allows for "smooth animation"
+
+  cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 25;
+
+ ? //generates a "wave-like pattern" that swing back and forth between -1 and 1 as its input varies
+  cubeMesh.scale.x = Math.sin(currentTime) * 7 + 2;
+  cubeMesh.position.x = Math.sin(currentTime) + 2;
+
+  controls.update();
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(renderLoop);
+ ? //wait until you're able to produce this frame and then call myself again
+};
+
+renderLoop();
+*/
+
+/* ================ Custom Geometry | BufferGeometry =============== 
+- A representation of mesh, line, or point geometry. 
+- Includes vertex positions, face indices, normals, colors, UVs, and custom attributes within buffers, reducing the cost of passing all this data to the GPU.
+
+
+* Create a Custom Geometry
+? const vertices = new Float32Array([0, 0, 0, 0, 2, 0, 2, 0, 0]);
+    an array of vertices is defined to specify the coordinates of the points in 3D space. Each group of three values represents the x, y, and z coordinates of a vertex.
+
+    a Float32Array is being used to store the vertex data for defining the geometry of the object. 
+    Float32Array is a typed array that allows efficient storage and manipulation of floating-point numbers in JavaScript. 
+
+? const bufferAttribute = new THREE.BufferAttribute(vertices, 3);
+    A BufferAttribute is created using the vertex array defined earlier. The '3' indicates that each vertex has three components (x, y, z).
+
+    BufferAttributes are used to manage attribute data like positions, colors, normals, etc., in WebGL applications.
+
+? const geometry = new THREE.BufferGeometry();
+    is instantiated to hold the vertex data for rendering.
+
+? geometry.setAttribute('position', bufferAttribute)
+
+const cubeMaterial = new THREE.MeshBasicMaterial({
+  color: '#e0b90b',
+  wireframe: true,
+});
+const cubeMesh = new THREE.Mesh(geometry, cubeMaterial);
+
+scene.add(cubeMesh);
 */
