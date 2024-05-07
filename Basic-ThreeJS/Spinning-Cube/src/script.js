@@ -5,6 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 //a container for other objects
 const scene = new THREE.Scene();
 
+/*========================= Mesh =============================*/
 //add objects to the scene
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); // width, height, depth
 const cubeMaterial = new THREE.MeshBasicMaterial({
@@ -16,7 +17,17 @@ const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 //making it visible in the 3D environment.
 scene.add(cubeMesh);
 
-//initialize the camera
+//a way to manipulate Vector3 properties, like position and properties inside of them as well like copy
+const tempVector = new THREE.Vector3(0, 2, 0);
+
+cubeMesh.position.copy(tempVector);
+cubeMesh.position.x = 1;
+cubeMesh.position.z = 0;
+
+const axesHelper = new THREE.AxesHelper(2);
+scene.add(axesHelper);
+
+/*==================== PerspectiveCamera =======================*/
 const camera = new THREE.PerspectiveCamera(
   45,
   window.innerWidth / window.innerHeight, // actual screen size
@@ -25,6 +36,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 //so far you can imagine that's camera is inside of the Mesh
 
+/*==================== OrthographicCamera =======================*/
 // const aspectRatio = window.innerWidth / window.innerHeight;
 // const camera = new THREE.OrthographicCamera(
 //   -1 * aspectRatio,
@@ -36,8 +48,12 @@ const camera = new THREE.PerspectiveCamera(
 // );
 
 //now position the camera to see the Mesh
-camera.position.z = 5; // 5 units or 5 meters away
+camera.position.z = 5; // 5 units or meters away
 
+//calculate the "distance" between the block we see and the camera
+console.log(cubeMesh.position.distanceTo(camera.position));
+
+/*======================== renderer ===========================*/
 //initialize the renderer
 const canvas = document.querySelector('canvas.threejs');
 const renderer = new THREE.WebGLRenderer({
@@ -52,14 +68,16 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
 renderer.setPixelRatio(maxPixelRatio);
 
+/*====================== OrbitControls =========================*/
 //initialize the controls | read document for more
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.8; //default is "0.05"
-controls.autoRotate = true;
-controls.autoRotateSpeed = 7; //default is "2"
+// controls.autoRotate = true;
+// controls.autoRotateSpeed = 7; //default is "2"
 controls.enableZoom = true; //default is "false"
 
+/*=============== resize the camera aspectRatio  ==================*/
 // resize the camera aspectRatio only when resizing the window, so we don't have to call it on every frame
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -69,6 +87,7 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+/*=================== requestAnimationFrame =======================*/
 //loop through our obj - make it animated
 const renderLoop = () => {
   controls.update();
@@ -189,4 +208,13 @@ renderLoop();
 ?- maxPixelRatio:
   helps in achieving higher resolution rendering on devices with high pixel density displays. 
   The `maxPixelRatio` variable is calculated as the minimum value between the device's pixel ratio and 2, ensuring optimal rendering performance.
+*/
+
+/* ====================== Vector3 & distanceTo ======================= 
+?- Vector3:
+  -  It is commonly used to define "positions", "directions", and "velocities"(the speed of something in a given direction) of objects in the 3D environment.
+
+?- distanceTo:
+  - is a method available on `Vector3` instances that calculates the Euclidean(هندسی) distance between two points represented by vectors.
+  - is determining the distance between the position of a "cube mesh" and the position of the "camera" in the 3D space.
 */
