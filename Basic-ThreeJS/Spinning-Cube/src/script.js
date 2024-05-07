@@ -42,9 +42,15 @@ camera.position.z = 5; // 5 units or 5 meters away
 const canvas = document.querySelector('canvas.threejs');
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
+  //smooth out jagged edges
+  antialias: true,
 });
 
 //set the size of the renderer's output canvas
+renderer.setSize(window.innerWidth, window.innerHeight);
+// achieving higher resolution rendering
+const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
+renderer.setPixelRatio(maxPixelRatio);
 
 //initialize the controls | read document for more
 const controls = new OrbitControls(camera, canvas);
@@ -174,5 +180,13 @@ renderLoop();
 
 ?- controls.update() 
 - it updates the state of the controls, including any damping effects or auto-rotation settings that have been configured.
+*/
 
+/* ================== antialias & maxPixelRatio =======================
+?- antialias:
+  is a technique used to "smooth out" jagged edges in computer graphics, resulting in a more visually appealing and realistic rendering of objects.
+
+?- maxPixelRatio:
+  helps in achieving higher resolution rendering on devices with high pixel density displays. 
+  The `maxPixelRatio` variable is calculated as the minimum value between the device's pixel ratio and 2, ensuring optimal rendering performance.
 */
