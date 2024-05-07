@@ -11,18 +11,11 @@ const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); // width, height, depth
 const cubeMaterial = new THREE.MeshBasicMaterial({
   color: '#e0b90b',
 });
-
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cubeMesh.position.set(1, 1, 0);
 
 //making it visible in the 3D environment.
 scene.add(cubeMesh);
-
-//a way to manipulate Vector3 properties, like position and properties inside of them as well like copy
-const tempVector = new THREE.Vector3(0, 2, 0);
-
-cubeMesh.position.copy(tempVector);
-cubeMesh.position.x = 1;
-cubeMesh.position.z = 0;
 
 const axesHelper = new THREE.AxesHelper(2);
 scene.add(axesHelper);
@@ -49,9 +42,6 @@ const camera = new THREE.PerspectiveCamera(
 
 //now position the camera to see the Mesh
 camera.position.z = 5; // 5 units or meters away
-
-//calculate the "distance" between the block we see and the camera
-console.log(cubeMesh.position.distanceTo(camera.position));
 
 /*======================== renderer ===========================*/
 //initialize the renderer
@@ -210,11 +200,53 @@ renderLoop();
   The `maxPixelRatio` variable is calculated as the minimum value between the device's pixel ratio and 2, ensuring optimal rendering performance.
 */
 
-/* ====================== Vector3 & distanceTo ======================= 
+/* =========== position & Vector3 & distanceTo & scale ================== 
+?- position:
+  - is a property of the Mesh
+  - that position itself is a Vector3
+
 ?- Vector3:
+  - representing the object's local position
   -  It is commonly used to define "positions", "directions", and "velocities"(the speed of something in a given direction) of objects in the 3D environment.
+
+  - a way to manipulate Vector3 properties, like position and properties inside of them as well like copy
+
+  const tempVector = new THREE.Vector3(0, 1, 0);
+  cubeMesh.position.copy(tempVector);
+  cubeMesh.position.x = 1;
+  cubeMesh.position.z = 0;
 
 ?- distanceTo:
   - is a method available on `Vector3` instances that calculates the Euclidean(هندسی) distance between two points represented by vectors.
   - is determining the distance between the position of a "cube mesh" and the position of the "camera" in the 3D space.
+
+- calculate the "distance" between the block we see and the camera
+    console.log(cubeMesh.position.distanceTo(camera.position));
+
+? - scale:
+  - The object's local scale. Default is Vector3( 1, 1, 1 )
+ 
+                     x, y, z
+  cubeMesh.scale.set(2, 2, 1);
+
+? Scene Hierarchy | Parent child relationship
+const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cubeMesh.position.y = -1;
+cubeMesh.scale.setScalar(0.5); //since group is=2 it'll be set as 1
+
+const cubeMesh2 = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cubeMesh2.position.x = 2;
+
+const cubeMesh3 = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cubeMesh3.position.x = -2;
+
+const group = new THREE.Group();
+group.add(cubeMesh);
+group.add(cubeMesh2);
+group.add(cubeMesh3);
+
+group.position.y = 2;
+group.scale.setScalar(2); //x,y,z = 2
+
+scene.add(group);
 */
