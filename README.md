@@ -58,7 +58,8 @@
 
 <br/><br/>
 
-![Fundamentals](https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b)
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b" height="100%" width="52%" alt="Three.js Fundamentals"/> &nbsp; 
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/f29eaa50-3a5c-4755-905b-b65d54cac0b5" height="20%" width="42%" alt="Perspective Camera"/>
 
 <br/>
 
