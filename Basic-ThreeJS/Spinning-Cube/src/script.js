@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 //a container for other objects
 const scene = new THREE.Scene();
 
-/*========================= Mesh =============================*/
+/*======================== Mesh ============================*/
 //add objects to the scene
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); //width, height, depth
 const cubeMaterial = new THREE.MeshBasicMaterial({
@@ -17,10 +17,7 @@ const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 //making it visible in the 3D environment.
 scene.add(cubeMesh);
 
-const axesHelper = new THREE.AxesHelper(2);
-cubeMesh.add(axesHelper);
-
-/*==================== PerspectiveCamera =======================*/
+/*=================== PerspectiveCamera ======================*/
 const camera = new THREE.PerspectiveCamera(
   45,
   window.innerWidth / window.innerHeight,
@@ -29,7 +26,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 //so far you can imagine that's camera is inside of the Mesh
 
-/*==================== OrthographicCamera =======================*/
+/*=================== OrthographicCamera =====================*/
 // const aspectRatio = window.innerWidth / window.innerHeight;
 // const camera = new THREE.OrthographicCamera(
 //   -1 * aspectRatio,
@@ -43,7 +40,7 @@ const camera = new THREE.PerspectiveCamera(
 //now position the camera to see the Mesh
 camera.position.z = 5; // 5 units or meters away
 
-/*======================== renderer ===========================*/
+/*======================== renderer ==========================*/
 //initialize the renderer
 const canvas = document.querySelector('canvas.threejs');
 const renderer = new THREE.WebGLRenderer({
@@ -58,16 +55,16 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
 renderer.setPixelRatio(maxPixelRatio);
 
-/*====================== OrbitControls =========================*/
+/*====================== OrbitControls =======================*/
 //initialize the controls
 const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-controls.dampingFactor = 0.8; //default is "0.05"
+// controls.enableDamping = true;
+// controls.dampingFactor = 0.8; //default is "0.05"
 // controls.autoRotate = true;
 // controls.autoRotateSpeed = 7; //default is "2"
 controls.enableZoom = true; //default is "false"
 
-/*=============== resize the camera aspectRatio  ==================*/
+/*============= resize the camera aspectRatio  ================*/
 //resize the camera aspectRatio when resizing the window
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -77,13 +74,27 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-/*============== render loop - requestAnimationFrame ==============*/
-//make it animated
-const renderLoop = () => {
-  controls.update();
+/*======================= Clock() ============================*/
+//keep track of time
+const clock = new THREE.Clock();
+let previousTime = 0;
 
+/*============== render loop - make it animated ==============*/
+const renderLoop = () => {
+  const currentTime = clock.getElapsedTime();
+  const delta = currentTime - previousTime;
+  previousTime = currentTime;
+  //subsequent iteration of the renderLoop can accurately calculate the elapsed time since the last frame. This allows for "smooth animation"
+
+  cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 25;
+
+  //generates a wave-like pattern that swing back and forth between -1 and 1 as its input varies
+  cubeMesh.scale.x = Math.sin(currentTime) * 7 + 2;
+  cubeMesh.position.x = Math.sin(currentTime) + 2;
+
+  controls.update();
   renderer.render(scene, camera);
-  window.requestAnimationFrame(renderLoop); 
+  window.requestAnimationFrame(renderLoop);
   //wait until you're able to produce this frame and then call myself again
 };
 
@@ -198,6 +209,15 @@ renderLoop();
 ?- maxPixelRatio:
   helps in achieving higher resolution rendering on devices with high pixel density displays. 
   The `maxPixelRatio` variable is calculated as the minimum value between the device's pixel ratio and 2, ensuring optimal rendering performance.
+*/
+
+/* ========================= axesHelper ============================
+?-  is a built-in object that helps visualize the orientation of the coordinate system.
+
+- When you create a new `AxesHelper` instance with a size parameter (in this case, 2), it generates three lines representing the X, Y, and Z axes in the specified size.
+
+const axesHelper = new THREE.AxesHelper(2);
+cubeMesh.add(axesHelper);
 */
 
 /* =========== position & Vector3 & distanceTo & scale ================== 
