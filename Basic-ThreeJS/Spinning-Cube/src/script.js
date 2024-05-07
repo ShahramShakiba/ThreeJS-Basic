@@ -7,23 +7,23 @@ const scene = new THREE.Scene();
 
 /*========================= Mesh =============================*/
 //add objects to the scene
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); // width, height, depth
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); //width, height, depth
 const cubeMaterial = new THREE.MeshBasicMaterial({
   color: '#e0b90b',
+  wireframe: true,
 });
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cubeMesh.position.set(1, 1, 0);
 
 //making it visible in the 3D environment.
 scene.add(cubeMesh);
 
 const axesHelper = new THREE.AxesHelper(2);
-scene.add(axesHelper);
+cubeMesh.add(axesHelper);
 
 /*==================== PerspectiveCamera =======================*/
 const camera = new THREE.PerspectiveCamera(
   45,
-  window.innerWidth / window.innerHeight, // actual screen size
+  window.innerWidth / window.innerHeight,
   0.1,
   200
 );
@@ -48,18 +48,18 @@ camera.position.z = 5; // 5 units or meters away
 const canvas = document.querySelector('canvas.threejs');
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
-  //smooth out jagged edges
+  //smooth out jagged edges|achieving higher resolution rendering
   antialias: true,
 });
 
 //set the size of the renderer's output canvas
 renderer.setSize(window.innerWidth, window.innerHeight);
-// achieving higher resolution rendering
+//achieving higher resolution rendering
 const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
 renderer.setPixelRatio(maxPixelRatio);
 
 /*====================== OrbitControls =========================*/
-//initialize the controls | read document for more
+//initialize the controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.8; //default is "0.05"
@@ -68,7 +68,7 @@ controls.dampingFactor = 0.8; //default is "0.05"
 controls.enableZoom = true; //default is "false"
 
 /*=============== resize the camera aspectRatio  ==================*/
-// resize the camera aspectRatio only when resizing the window, so we don't have to call it on every frame
+//resize the camera aspectRatio when resizing the window
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
 
@@ -77,14 +77,13 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-/*=================== requestAnimationFrame =======================*/
-//loop through our obj - make it animated
+/*============== render loop - requestAnimationFrame ==============*/
+//make it animated
 const renderLoop = () => {
   controls.update();
 
-  //anytime U made a change to the scene, do it before calling the render
   renderer.render(scene, camera);
-  window.requestAnimationFrame(renderLoop); //60frames per second experience
+  window.requestAnimationFrame(renderLoop); 
   //wait until you're able to produce this frame and then call myself again
 };
 
@@ -162,6 +161,7 @@ renderLoop();
 */
 
 /* ======================= requestAnimationFrame() ======================= 
+? - 60frames per second experience
 - used in web development to optimize animations and improve performance by synchronizing them with the browser's repaint cycle.
 
 - is a method provided by the browser that allows developers to schedule an animation frame to be rendered on the next repaint cycle of the browser. 
@@ -249,4 +249,23 @@ group.position.y = 2;
 group.scale.setScalar(2); //x,y,z = 2
 
 scene.add(group);
+*/
+
+/* ======================== Rotation ========================= 
+?- rotation : Euler
+  Object's local rotation (see Euler angles), in radians.
+
+- Euler angles describe a rotational transformation by rotating an object on its various axes in specified amounts per axis, and a specified axis order.
+
+- Euler instance will yield its components (x, y, z, order) in the corresponding order.
+  - By default "order" is ('XYZ')
+
+  cubeMesh.rotation.reorder('YXZ');
+  cubeMesh.rotation.y = THREE.MathUtils.degToRad(90);
+  cubeMesh.rotation.x = THREE.MathUtils.degToRad(45);
+
+?- Quaternion:
+- Quaternions are used in three.js to represent "rotations".
+
+- Iterating through a Quaternion instance will yield its components (x, y, z, w) in the corresponding order.
 */
