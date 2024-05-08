@@ -11,32 +11,32 @@ const pane = new Pane();
 //width, height, depth, widthSegments, heightSegments, depthSegments
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
+const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
 
-const material = new THREE.MeshBasicMaterial({
-  // use "#e0b90b" or -0xe0b90b- to set the color
-  color: 0xe0b90b,
-});
+const material = new THREE.MeshPhongMaterial();
+material.shininess = 50;
 
-material.transparent = true;
-material.opacity = 0.5;
-//three.js by default has one-side materials, we can fix it by:
-material.side = THREE.DoubleSide; //or just material.side = 2
-//                        color   near far
-const fog = new THREE.Fog(0xffffff, 1, 10);
-scene.fog = fog;
-scene.background = new THREE.Color(0xffffff);
+pane.addBinding(material, 'shininess', { min: 0, max: 800, step: 10 });
 
 const mesh = new THREE.Mesh(geometry, material);
-const mesh2 = new THREE.Mesh(geometry, material);
-mesh2.position.x = 1.4;
+const mesh2 = new THREE.Mesh(torusKnotGeometry, material);
+mesh2.position.x = 1.5;
 
 const plane = new THREE.Mesh(planeGeometry, material);
-plane.position.x = -1.4;
+plane.position.x = -1.5;
 
 //making it visible in the 3D environment.
 scene.add(mesh);
 scene.add(mesh2);
 scene.add(plane);
+
+//initialize the light                      intensity
+const light = new THREE.AmbientLight(0xffffff, 0.01);
+scene.add(light);
+
+const pointLight = new THREE.PointLight(0xffffff,30);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
 
 /*=================== PerspectiveCamera ======================*/
 const camera = new THREE.PerspectiveCamera(
@@ -81,8 +81,8 @@ renderer.setPixelRatio(maxPixelRatio);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 // controls.dampingFactor = 0.8; //default is "0.05"
-controls.autoRotate = true;
-controls.autoRotateSpeed = 2; //default is "2"
+// controls.autoRotate = true;
+controls.autoRotateSpeed = 1; //default is "2"
 controls.enableZoom = true; //default is "false"
 
 /*============= resize the camera aspectRatio  ================*/
@@ -478,4 +478,33 @@ plane.position.x = -1.4;
 scene.add(mesh);
 scene.add(mesh2);
 scene.add(plane);
+*/
+
+/* ============ Manipulate Material | MeshPhongMaterial ===============
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const planeGeometry = new THREE.PlaneGeometry(1, 1);
+const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+
+const material = new THREE.MeshPhongMaterial();
+material.shininess = 50;
+
+pane.addBinding(material, 'shininess', { min: 0, max: 800, step: 10 });
+
+const mesh = new THREE.Mesh(geometry, material);
+const mesh2 = new THREE.Mesh(torusKnotGeometry, material);
+mesh2.position.x = 1.5;
+
+const plane = new THREE.Mesh(planeGeometry, material);
+plane.position.x = -1.5;
+
+scene.add(mesh);
+scene.add(mesh2);
+scene.add(plane);
+
+const light = new THREE.AmbientLight(0xffffff, 0.01);
+scene.add(light);
+
+const pointLight = new THREE.PointLight(0xffffff,30);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
 */
