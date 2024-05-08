@@ -1,21 +1,63 @@
 //import an entire module as a single object, under the name "THREE"
 import * as THREE from 'three';
+import { Pane } from 'tweakpane';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 //a container for other objects
 const scene = new THREE.Scene();
+const pane = new Pane();
 
-/*======================== Mesh ============================*/
-//add objects to the scene
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); //width, height, depth
-const cubeMaterial = new THREE.MeshBasicMaterial({
+/*============ Mesh | add objects to the scene ================*/
+//width, height, depth, widthSegments, heightSegments, depthSegments
+const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
+
+const material = new THREE.MeshBasicMaterial({
   color: '#e0b90b',
-  wireframe: true,
 });
-const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+const cubeMesh = new THREE.Mesh(geometry, material);
 
 //making it visible in the 3D environment.
 scene.add(cubeMesh);
+
+const planeParameters = {
+  width: 1,
+  height: 1,
+};
+
+const planeFolder = pane.addFolder({
+  title: 'Plane',
+});
+
+planeFolder
+  .addBinding(planeParameters, 'width', {
+    min: 0,
+    max: 10,
+    step: 0.1,
+    label: 'Width',
+  })
+  .on('change', () => {
+    //create new PlaneGeometry | handle change events
+    geometry = new THREE.PlaneGeometry(
+      planeParameters.width,
+      planeParameters.height
+    );
+    //re-assigning on actual geometry variable
+    cubeMesh.geometry = geometry;
+  });
+planeFolder
+  .addBinding(planeParameters, 'height', {
+    min: 0,
+    max: 10,
+    step: 0.1,
+    label: 'Height',
+  })
+  .on('change', () => {
+    geometry = new THREE.PlaneGeometry(
+      planeParameters.width,
+      planeParameters.height
+    );
+    cubeMesh.geometry = geometry;
+  });
 
 /*=================== PerspectiveCamera ======================*/
 const camera = new THREE.PerspectiveCamera(
@@ -61,7 +103,7 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 // controls.dampingFactor = 0.8; //default is "0.05"
 controls.autoRotate = true;
-controls.autoRotateSpeed = 7; //default is "2"
+controls.autoRotateSpeed = 2; //default is "2"
 controls.enableZoom = true; //default is "false"
 
 /*============= resize the camera aspectRatio  ================*/
@@ -330,4 +372,96 @@ const cubeMaterial = new THREE.MeshBasicMaterial({
 const cubeMesh = new THREE.Mesh(geometry, cubeMaterial);
 
 scene.add(cubeMesh);
+*/
+
+/* ===================== Tweakpane library ===================
+# npm install --save tweakpane
+
+* Tweakpane library is a lightweight graphical user interface (GUI) library designed for developers working with creative coding frameworks like three.js.
+
+* It offers a user-friendly way to manipulate variables and parameters in real-time, enabling easy customization and experimentation with visual elements in your projects. 
+
+
+? working on actual "Mesh" itself :
+pane.addBinding(cubeMesh.scale, 'x', {
+  min: 0,
+  max: 10,
+  step: 0.1,
+  label: 'Scale X',
+});
+pane.addBinding(cubeMesh.scale, 'y', {
+  min: 0,
+  max: 10,
+  step: 0.1,
+  label: 'Scale Y',
+});
+pane.addBinding(cubeMesh.scale, 'z', {
+  min: 0,
+  max: 10,
+  step: 0.1,
+  label: 'Scale Z',
+});
+
+
+? working on "Geometry" itself :
+- "Geometry" & "Material" makes up the Mesh and coz of that the Mesh has different arguments, you CAN NOT scale the Geometry like the Mesh
+    - instead we have "parameters object"
+
+    - something like Geometry it takes a certain set ups arguments in the "constructor" but after it's created you can't change it after the fact
+
+    - re-assigning the Geometry or Material to the Mesh
+
+
+let geometry = new THREE.PlaneGeometry(1, 1);
+
+const cubeMaterial = new THREE.MeshBasicMaterial({
+  color: '#e0b90b',
+  wireframe: true,
+});
+const cubeMesh = new THREE.Mesh(geometry, cubeMaterial);
+
+? making it visible in the 3D environment.
+scene.add(cubeMesh);
+
+const planeParameters = {
+  width: 1,
+  height: 1,
+};
+
+const planeFolder = pane.addFolder({
+  title: 'Plane',
+});
+
+planeFolder
+  .addBinding(planeParameters, 'width', {
+    min: 0,
+    max: 10,
+    step: 0.1,
+    label: 'Width',
+  })
+  .on('change', () => {
+    ? create new PlaneGeometry | handle change events
+    geometry = new THREE.PlaneGeometry(
+      planeParameters.width,
+      planeParameters.height
+    );
+    ? re-assigning on actual geometry variable
+    cubeMesh.geometry = geometry;
+  });
+
+planeFolder
+  .addBinding(planeParameters, 'height', {
+    min: 0,
+    max: 10,
+    step: 0.1,
+    label: 'Height',
+  })
+  .on('change', () => {
+    geometry = new THREE.PlaneGeometry(
+      planeParameters.width,
+      planeParameters.height
+    );
+    cubeMesh.geometry = geometry;
+  });
+
 */
