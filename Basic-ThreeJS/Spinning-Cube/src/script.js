@@ -9,55 +9,34 @@ const pane = new Pane();
 
 /*============ Mesh | add objects to the scene ================*/
 //width, height, depth, widthSegments, heightSegments, depthSegments
-const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const planeGeometry = new THREE.PlaneGeometry(1, 1);
 
 const material = new THREE.MeshBasicMaterial({
-  color: '#e0b90b',
+  // use "#e0b90b" or -0xe0b90b- to set the color
+  color: 0xe0b90b,
 });
-const cubeMesh = new THREE.Mesh(geometry, material);
+
+material.transparent = true;
+material.opacity = 0.5;
+//three.js by default has one-side materials, we can fix it by:
+material.side = THREE.DoubleSide; //or just material.side = 2
+//                        color   near far
+const fog = new THREE.Fog(0xffffff, 1, 10);
+scene.fog = fog;
+scene.background = new THREE.Color(0xffffff);
+
+const mesh = new THREE.Mesh(geometry, material);
+const mesh2 = new THREE.Mesh(geometry, material);
+mesh2.position.x = 1.4;
+
+const plane = new THREE.Mesh(planeGeometry, material);
+plane.position.x = -1.4;
 
 //making it visible in the 3D environment.
-scene.add(cubeMesh);
-
-const planeParameters = {
-  width: 1,
-  height: 1,
-};
-
-const planeFolder = pane.addFolder({
-  title: 'Plane',
-});
-
-planeFolder
-  .addBinding(planeParameters, 'width', {
-    min: 0,
-    max: 10,
-    step: 0.1,
-    label: 'Width',
-  })
-  .on('change', () => {
-    //create new PlaneGeometry | handle change events
-    geometry = new THREE.PlaneGeometry(
-      planeParameters.width,
-      planeParameters.height
-    );
-    //re-assigning on actual geometry variable
-    cubeMesh.geometry = geometry;
-  });
-planeFolder
-  .addBinding(planeParameters, 'height', {
-    min: 0,
-    max: 10,
-    step: 0.1,
-    label: 'Height',
-  })
-  .on('change', () => {
-    geometry = new THREE.PlaneGeometry(
-      planeParameters.width,
-      planeParameters.height
-    );
-    cubeMesh.geometry = geometry;
-  });
+scene.add(mesh);
+scene.add(mesh2);
+scene.add(plane);
 
 /*=================== PerspectiveCamera ======================*/
 const camera = new THREE.PerspectiveCamera(
@@ -463,5 +442,40 @@ planeFolder
     );
     cubeMesh.geometry = geometry;
   });
+*/
 
+/* ============ Manipulate Material | MeshBasicMaterial ===============
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const planeGeometry = new THREE.PlaneGeometry(1, 1);
+
+const material = new THREE.MeshBasicMaterial({
+? color: '#e0b90b',
+? transparent: true,  //one-way
+? opacity: 0.5,
+});
+
+? //another-way 
+material.color = new THREE.Color('#e0b90b');
+material.transparent = true;
+material.opacity = 0.5;
+
+? three.js by default has one-side materials, we can fix it by:
+material.side = THREE.DoubleSide; //or just material.side = 2
+
+?                         color   near far
+const fog = new THREE.Fog(0xffffff, 1, 10);
+scene.fog = fog;
+scene.background = new THREE.Color(0xffffff);
+
+const mesh = new THREE.Mesh(geometry, material);
+const mesh2 = new THREE.Mesh(geometry, material);
+mesh2.position.x = 1.4;
+
+const plane = new THREE.Mesh(planeGeometry, material);
+plane.position.x = -1.4;
+
+
+scene.add(mesh);
+scene.add(mesh2);
+scene.add(plane);
 */
