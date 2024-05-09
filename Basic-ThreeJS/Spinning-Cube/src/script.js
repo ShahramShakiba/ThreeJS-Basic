@@ -13,10 +13,29 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
 const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
 
-const material = new THREE.MeshPhongMaterial();
-material.shininess = 50;
+const material = new THREE.MeshPhysicalMaterial();
+material.color = new THREE.Color(0xd1b01f);
 
-pane.addBinding(material, 'shininess', { min: 0, max: 800, step: 10 });
+pane.addBinding(material, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
+pane.addBinding(material, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
+pane.addBinding(material, 'reflectivity', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
+pane.addBinding(material, 'clearcoat', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
 
 const mesh = new THREE.Mesh(geometry, material);
 const mesh2 = new THREE.Mesh(torusKnotGeometry, material);
@@ -31,11 +50,11 @@ scene.add(mesh2);
 scene.add(plane);
 
 //initialize the light                      intensity
-const light = new THREE.AmbientLight(0xffffff, 0.01);
+const light = new THREE.AmbientLight(0xffffff, 0.08);
 scene.add(light);
 
-const pointLight = new THREE.PointLight(0xffffff,30);
-pointLight.position.set(5, 5, 5);
+const pointLight = new THREE.PointLight(0xffff23, 40);
+pointLight.position.set(3, 2, 4);
 scene.add(pointLight);
 
 /*=================== PerspectiveCamera ======================*/
@@ -507,4 +526,71 @@ scene.add(light);
 const pointLight = new THREE.PointLight(0xffffff,30);
 pointLight.position.set(5, 5, 5);
 scene.add(pointLight);
+*/
+
+/* ============ Manipulate Material | MeshStandardMaterial ===============
+- A standard physically based material, using Metallic-Roughness workflow.
+
+?- "Physically Based Rendering" (PBR) has recently become the standard in many 3D applications, such as Unity, Unreal and 3D Studio Max.
+
+- In practice this gives a more accurate and realistic looking result than the "MeshLambertMaterial(A material for non-shiny surfaces, without specular highlights)" or "MeshPhongMaterial", at the cost of being somewhat more computationally expensive.
+
+?- Note that for best results you should always specify an "environment map" when using this material.
+
+const material = new THREE.MeshStandardMaterial();
+material.color = new THREE.Color(0xd1b01f);
+
+pane.addBinding(material, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
+pane.addBinding(material, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
+*/
+
+/* ============ Manipulate Material | MeshPhysicalMaterial ===============
+- providing more advanced physically-based rendering properties:
+
+? Anisotropy: ناهمسانگردی
+    Ability to represent the anisotropic property of materials as observable with brushed metals.
+? Clearcoat:
+    Some materials — like car paints, carbon fiber, and wet surfaces — require a clear, reflective layer on top of another layer that may be irregular or rough.
+? Iridescence: رنگین کمانی
+    Allows to render the effect where hue varies depending on the viewing angle and illumination angle. This can be seen on soap bubbles, oil films, or on the wings of many insects.
+? Physically-based transparency: 
+    One limitation of ".opacity" is that highly transparent materials are less reflective. Physically-based ".transmission" provides a more realistic option for thin, transparent surfaces like glass.
+? Sheen: درخشندگی
+    Can be used for representing cloth and fabric materials.
+
+
+? MeshPhysicalMaterial has a higher performance cost, per pixel, than other three.js materials.
+
+
+const material = new THREE.MeshPhysicalMaterial();
+material.color = new THREE.Color(0xd1b01f);
+
+pane.addBinding(material, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
+pane.addBinding(material, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
+pane.addBinding(material, 'reflectivity', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
+pane.addBinding(material, 'clearcoat', {
+  min: 0,
+  max: 1,
+  step: 0.1,
+});
 */
