@@ -8,48 +8,35 @@ const scene = new THREE.Scene();
 const pane = new Pane();
 
 /*============ Mesh | add objects to the scene ================*/
-//width, height, depth, widthSegments, heightSegments, depthSegments
+// Initialize the Geometry
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
 const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+const sphereGeometry = new THREE.SphereGeometry(0.6, 32, 32);
+const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
 
-const material = new THREE.MeshPhysicalMaterial();
-material.color = new THREE.Color(0xd1b01f);
+// Initialize the Material
+const material = new THREE.MeshBasicMaterial();
 
-pane.addBinding(material, 'metalness', {
-  min: 0,
-  max: 1,
-  step: 0.1,
-});
-pane.addBinding(material, 'roughness', {
-  min: 0,
-  max: 1,
-  step: 0.1,
-});
-pane.addBinding(material, 'reflectivity', {
-  min: 0,
-  max: 1,
-  step: 0.1,
-});
-pane.addBinding(material, 'clearcoat', {
-  min: 0,
-  max: 1,
-  step: 0.1,
-});
-
-const mesh = new THREE.Mesh(geometry, material);
-const mesh2 = new THREE.Mesh(torusKnotGeometry, material);
-mesh2.position.x = 1.5;
-
+// Initialize the Mesh
+const cube = new THREE.Mesh(geometry, material);
+const knot = new THREE.Mesh(torusKnotGeometry, material);
+knot.position.x = 1.7;
 const plane = new THREE.Mesh(planeGeometry, material);
-plane.position.x = -1.5;
+plane.position.x = -1.6;
+const sphere = new THREE.Mesh(sphereGeometry, material);
+sphere.position.y = 1.4;
+const cylinder = new THREE.Mesh(cylinderGeometry, material);
+cylinder.position.y = -1.4;
 
-//making it visible in the 3D environment.
-scene.add(mesh);
-scene.add(mesh2);
-scene.add(plane);
+// Initialize the Group
+const group = new THREE.Group();
 
-//initialize the light                      intensity
+// Add the Meshes to the Scene
+group.add(cube, knot, plane, sphere, cylinder);
+scene.add(group);
+
+// Initialize the Light                      intensity
 const light = new THREE.AmbientLight(0xffffff, 0.08);
 scene.add(light);
 
@@ -59,7 +46,7 @@ scene.add(pointLight);
 
 /*=================== PerspectiveCamera ======================*/
 const camera = new THREE.PerspectiveCamera(
-  45,
+  50,
   window.innerWidth / window.innerHeight,
   0.1,
   200
@@ -116,6 +103,11 @@ window.addEventListener('resize', () => {
 
 /*============== render loop - make it animated ==============*/
 const renderLoop = () => {
+  // rotate Meshes
+  group.children.forEach((child) => {
+    child.rotation.y += 0.005;
+  });
+
   controls.update();
   renderer.render(scene, camera);
   window.requestAnimationFrame(renderLoop);
@@ -593,4 +585,40 @@ pane.addBinding(material, 'clearcoat', {
   max: 1,
   step: 0.1,
 });
+*/
+
+/* ======================= Rotate Meshes =========================
+const renderLoop = () => {
+  ? rotate All Meshes
+  scene.children.forEach((child) => {
+    ? only rotate child and not things like "lights"
+    if (child instanceof THREE.Mesh) {
+      child.rotation.y += 0.01;
+      child.rotation.x += 0.003;
+    }
+  });
+
+  controls.update();
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(renderLoop);
+};
+
+* OR
+? creating a group first
+const group = new THREE.Group();
+
+? Add the Meshes to the group then
+group.add(cube, knot, plane, sphere, cylinder);
+scene.add(group);
+
+const renderLoop = () => {
+  group.children.forEach((child) => {
+    child.rotation.y += 0.01;
+    child.rotation.x += 0.003;
+  });
+
+  controls.update();
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(renderLoop);
+};
 */
