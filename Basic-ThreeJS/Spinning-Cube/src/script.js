@@ -6,6 +6,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 //a container for other objects
 const scene = new THREE.Scene();
 const pane = new Pane();
+const textureLoader = new THREE.TextureLoader();
 
 /*============ Mesh | add objects to the scene ================*/
 // Initialize the Geometry
@@ -15,8 +16,14 @@ const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
 const sphereGeometry = new THREE.SphereGeometry(0.6, 32, 32);
 const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
 
+// Initialize the Texture
+const textureTest = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
+);
+
 // Initialize the Material
 const material = new THREE.MeshBasicMaterial();
+material.map = textureTest;
 
 // Initialize the Mesh
 const cube = new THREE.Mesh(geometry, material);
@@ -38,11 +45,10 @@ scene.add(group);
 
 // Initialize the Light                      intensity
 const light = new THREE.AmbientLight(0xffffff, 0.08);
-scene.add(light);
-
 const pointLight = new THREE.PointLight(0xffff23, 40);
 pointLight.position.set(3, 2, 4);
-scene.add(pointLight);
+
+scene.add(light, pointLight);
 
 /*=================== PerspectiveCamera ======================*/
 const camera = new THREE.PerspectiveCamera(
@@ -621,4 +627,26 @@ const renderLoop = () => {
   renderer.render(scene, camera);
   window.requestAnimationFrame(renderLoop);
 };
+*/
+
+/* ======================= 3D Texture =========================
+?- https://freepbr.com/
+    Provides "PBR" materials and texture files.  
+    My free PBR, or Physically-Based Rendering materials offer the "metalness" / "roughness" as well as the "metallic" / "smoothness" workflows.  
+    These 2K texture maps can be used in "Unreal Engine", "Unity", "Blender" and many other 3D, "Game Design", and "CAD solutions". 
+
+* Texture is just part of "Material"
+
+? import texture and turn it into a texture that Three.js is able to recognize:
+    const textureLoader = new THREE.TextureLoader();
+
+    const textureTest = textureLoader.load(
+      '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
+    );
+    ? save downloaded textures in your root-path to access it
+
+    const material = new THREE.MeshBasicMaterial();
+    material.map = textureTest;
+    material.color = new THREE.Color('red');
+
 */
