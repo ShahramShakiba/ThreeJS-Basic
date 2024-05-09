@@ -50,7 +50,7 @@
 
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b" height="100%" width="52%" alt="Three.js Fundamentals"/> &nbsp; 
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/f29eaa50-3a5c-4755-905b-b65d54cac0b5" height="20%" width="42%" alt="Perspective Camera"/>
- <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/b9ee203c-af4e-429c-8544-c1ad1bb07478" height="30%" width="52%" alt="Perspective Camera"/>
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/b9ee203c-af4e-429c-8544-c1ad1bb07478" height="30%" width="52%" alt="Three.js Metarial"/>
 
 <br/>
 
