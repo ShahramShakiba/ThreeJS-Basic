@@ -17,13 +17,18 @@ const sphereGeometry = new THREE.SphereGeometry(0.6, 32, 32);
 const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
 
 // Initialize the Texture
-const textureTest = textureLoader.load(
-  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
+const grassTexture = textureLoader.load(
+  'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
 );
+grassTexture.repeat.set(3, 3);
+// grassTexture.wrapS = THREE.RepeatWrapping;
+// grassTexture.wrapT = THREE.RepeatWrapping;
+grassTexture.wrapS = THREE.MirroredRepeatWrapping;
+grassTexture.wrapT = THREE.MirroredRepeatWrapping;
 
 // Initialize the Material
 const material = new THREE.MeshBasicMaterial();
-material.map = textureTest;
+material.map = grassTexture;
 
 // Initialize the Mesh
 const cube = new THREE.Mesh(geometry, material);
@@ -31,6 +36,9 @@ const knot = new THREE.Mesh(torusKnotGeometry, material);
 knot.position.x = 1.7;
 const plane = new THREE.Mesh(planeGeometry, material);
 plane.position.x = -1.6;
+plane.rotation.x = -(Math.PI * 0.5); // rotate 90deg
+plane.scale.set(1000, 1000);
+
 const sphere = new THREE.Mesh(sphereGeometry, material);
 sphere.position.y = 1.4;
 const cylinder = new THREE.Mesh(cylinderGeometry, material);
@@ -40,22 +48,22 @@ cylinder.position.y = -1.4;
 const group = new THREE.Group();
 
 // Add the Meshes to the Scene
-group.add(cube, knot, plane, sphere, cylinder);
-scene.add(group);
+// group.add(cube, knot, plane, sphere, cylinder);
+scene.add(plane);
 
 // Initialize the Light                      intensity
 const light = new THREE.AmbientLight(0xffffff, 0.08);
 const pointLight = new THREE.PointLight(0xffff23, 40);
-pointLight.position.set(3, 2, 4);
+pointLight.position.set(5, 5, 5);
 
 scene.add(light, pointLight);
 
 /*=================== PerspectiveCamera ======================*/
 const camera = new THREE.PerspectiveCamera(
-  50,
+  35,
   window.innerWidth / window.innerHeight,
   0.1,
-  200
+  10000
 );
 //so far you can imagine that's camera is inside of the Mesh
 
@@ -71,8 +79,8 @@ const camera = new THREE.PerspectiveCamera(
 // );
 
 //now position the camera to see the Mesh
-camera.position.z = 5; // 5 units or meters away
-
+camera.position.z = 10; // 10 units or meters away
+camera.position.y = 5;
 /*======================== renderer ==========================*/
 //initialize the renderer
 const canvas = document.querySelector('canvas.threejs');
@@ -94,8 +102,8 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 // controls.dampingFactor = 0.8; //default is "0.05"
 // controls.autoRotate = true;
-controls.autoRotateSpeed = 1; //default is "2"
-controls.enableZoom = true; //default is "false"
+// controls.autoRotateSpeed = 1; //default is "2"
+// controls.enableZoom = true; //default is "false"
 
 /*============= resize the camera aspectRatio  ================*/
 //resize the camera aspectRatio when resizing the window
@@ -110,9 +118,9 @@ window.addEventListener('resize', () => {
 /*============== render loop - make it animated ==============*/
 const renderLoop = () => {
   // rotate Meshes
-  group.children.forEach((child) => {
-    child.rotation.y += 0.005;
-  });
+  // group.children.forEach((child) => {
+  //   child.rotation.y += 0.005;
+  // });
 
   controls.update();
   renderer.render(scene, camera);
@@ -649,4 +657,37 @@ const renderLoop = () => {
     material.map = textureTest;
     material.color = new THREE.Color('red');
 
+
+--------------------------------- Manipulate Texture
+const grassTexture = textureLoader.load(
+  'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
+);
+grassTexture.repeat.set(2, 2);
+?------- RepeatWrapping
+grassTexture.wrapS = THREE.RepeatWrapping;
+grassTexture.wrapT = THREE.RepeatWrapping;
+
+?------- MirroredRepeatWrapping
+grassTexture.wrapS = THREE.MirroredRepeatWrapping;
+grassTexture.wrapT = THREE.MirroredRepeatWrapping; 
+
+const plane = new THREE.Mesh(planeGeometry, material);
+plane.position.x = -1.6;
+plane.rotation.x = -(Math.PI * 0.5); // rotate 90deg
+plane.scale.set(1000, 1000);
+
+?----- wrapS
+- This defines how the texture is wrapped horizontally(X axes) and corresponds to U in UV mapping.
+
+?----- wrapT
+- This defines how the texture is wrapped vertically(Y axes) and corresponds to V in UV mapping.
+
+? WrapS and wrapT are parameters that control how textures are repeated or clamped{attached} along the horizontal (S) and vertical (T) axes respectively.
+
+?----- differences between "RepeatWrapping" and "MirroredRepeatWrapping"
+The (RepeatWrapping) mode simply repeats the texture if it extends beyond the boundaries of the object, creating a tiled effect.
+    - for better understanding, something like this, starting from 0 to 100 and when we start to repeating again go back to 0 back to 100.
+
+On the other hand, (MirroredRepeatWrapping) also repeats the texture but mirrors it at every repeat, which can be useful for creating seamless patterns without obvious seams or edges. 
+    - for better understanding, something like this, starting from 0 to 100 and 100 back to 0.
 */
