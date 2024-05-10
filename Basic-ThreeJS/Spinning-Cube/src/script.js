@@ -21,10 +21,21 @@ const grassTexture = textureLoader.load(
   'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
 );
 grassTexture.repeat.set(3, 3);
-// grassTexture.wrapS = THREE.RepeatWrapping;
-// grassTexture.wrapT = THREE.RepeatWrapping;
-grassTexture.wrapS = THREE.MirroredRepeatWrapping;
-grassTexture.wrapT = THREE.MirroredRepeatWrapping;
+grassTexture.wrapS = THREE.RepeatWrapping;
+grassTexture.wrapT = THREE.RepeatWrapping;
+
+pane.addBinding(grassTexture, 'offset', {
+  x: {
+    min: -1,
+    max: 1,
+    step: 0.01,
+  },
+  y: {
+    min: -1,
+    max: 1,
+    step: 0.01,
+  },
+});
 
 // Initialize the Material
 const material = new THREE.MeshBasicMaterial();
@@ -637,7 +648,7 @@ const renderLoop = () => {
 };
 */
 
-/* ======================= 3D Texture =========================
+/* ============================ 3D Texture =============================
 ?- https://freepbr.com/
     Provides "PBR" materials and texture files.  
     My free PBR, or Physically-Based Rendering materials offer the "metalness" / "roughness" as well as the "metallic" / "smoothness" workflows.  
@@ -658,16 +669,16 @@ const renderLoop = () => {
     material.color = new THREE.Color('red');
 
 
---------------------------------- Manipulate Texture
+*--------------------------------- Manipulate Textures
 const grassTexture = textureLoader.load(
   'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
 );
 grassTexture.repeat.set(2, 2);
-?------- RepeatWrapping
+?------------ RepeatWrapping
 grassTexture.wrapS = THREE.RepeatWrapping;
 grassTexture.wrapT = THREE.RepeatWrapping;
 
-?------- MirroredRepeatWrapping
+?------------ MirroredRepeatWrapping
 grassTexture.wrapS = THREE.MirroredRepeatWrapping;
 grassTexture.wrapT = THREE.MirroredRepeatWrapping; 
 
@@ -676,10 +687,10 @@ plane.position.x = -1.6;
 plane.rotation.x = -(Math.PI * 0.5); // rotate 90deg
 plane.scale.set(1000, 1000);
 
-?----- wrapS
+?------------- wrapS
 - This defines how the texture is wrapped horizontally(X axes) and corresponds to U in UV mapping.
 
-?----- wrapT
+?------------- wrapT
 - This defines how the texture is wrapped vertically(Y axes) and corresponds to V in UV mapping.
 
 ? WrapS and wrapT are parameters that control how textures are repeated or clamped{attached} along the horizontal (S) and vertical (T) axes respectively.
@@ -690,4 +701,30 @@ The (RepeatWrapping) mode simply repeats the texture if it extends beyond the bo
 
 On the other hand, (MirroredRepeatWrapping) also repeats the texture but mirrors it at every repeat, which can be useful for creating seamless patterns without obvious seams or edges. 
     - for better understanding, something like this, starting from 0 to 100 and 100 back to 0.
+
+
+
+?-------------------- offset
+* The 'offset' property allows you to shift the starting position of the texture along the "x" and "y" axes within the specified range (min to max) and step increment. 
+* By adjusting the offset values, you can create effects such as scrolling textures or creating animated textures on objects in a Three.js scene.
+
+const grassTexture = textureLoader.load(
+  'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
+);
+grassTexture.repeat.set(3, 3);
+grassTexture.wrapS = THREE.RepeatWrapping;
+grassTexture.wrapT = THREE.RepeatWrapping;
+
+pane.addBinding(grassTexture, 'offset', {
+  x: {
+    min: -1,
+    max: 1,
+    step: 0.01,
+  },
+  y: {
+    min: -1,
+    max: 1,
+    step: 0.01,
+  },
+});
 */
