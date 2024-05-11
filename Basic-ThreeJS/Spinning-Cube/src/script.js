@@ -8,12 +8,12 @@ const scene = new THREE.Scene();
 const pane = new Pane();
 const textureLoader = new THREE.TextureLoader();
 
-/*============ Mesh | add objects to the scene ================*/
+/*================= Mesh | add objects to the scene =================*/
 // Initialize the Geometry
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
 const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
-const sphereGeometry = new THREE.SphereGeometry(0.6, 32, 32);
+const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
 const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
 
 // Initialize the Texture
@@ -30,7 +30,7 @@ const grassMetallic = textureLoader.load(
   '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_metallic.png'
 );
 const grassNormal = textureLoader.load(
-  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-olg.png'
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-ogl.png'
 );
 const grassRoughness = textureLoader.load(
   '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_roughness.png'
@@ -43,6 +43,7 @@ material.roughnessMap = grassRoughness;
 material.roughness = 1;
 material.metalnessMap = grassMetallic;
 material.metalness = 1;
+material.normalMap = grassNormal;
 
 // Initialize the Mesh
 const cube = new THREE.Mesh(geometry, material);
@@ -64,22 +65,22 @@ group.add(cube, knot, plane, sphere, cylinder);
 scene.add(group);
 
 // Initialize the Light                      intensity
-const light = new THREE.AmbientLight(0xffffff, 0.2);
-const pointLight = new THREE.PointLight(0xffff23, 40);
-pointLight.position.set(5, 5, 5);
+const light = new THREE.AmbientLight(0xffffff, 0.1);
+const pointLight = new THREE.PointLight(0xffff23, 50);
+pointLight.position.set(5, 3, 5);
 
 scene.add(light, pointLight);
 
-/*=================== PerspectiveCamera ======================*/
+/*====================== PerspectiveCamera ========================*/
 const camera = new THREE.PerspectiveCamera(
-  35,
+  25,
   window.innerWidth / window.innerHeight,
   0.1,
   10000
 );
 //so far you can imagine that's camera is inside of the Mesh
 
-/*=================== OrthographicCamera =====================*/
+/*====================== OrthographicCamera =======================*/
 // const aspectRatio = window.innerWidth / window.innerHeight;
 // const camera = new THREE.OrthographicCamera(
 //   -1 * aspectRatio,
@@ -93,7 +94,7 @@ const camera = new THREE.PerspectiveCamera(
 //now position the camera to see the Mesh
 camera.position.z = 10; // 10 units or meters away
 camera.position.y = 5;
-/*======================== renderer ==========================*/
+/*=========================== renderer ============================*/
 //initialize the renderer
 const canvas = document.querySelector('canvas.threejs');
 const renderer = new THREE.WebGLRenderer({
@@ -108,7 +109,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
 renderer.setPixelRatio(maxPixelRatio);
 
-/*====================== OrbitControls =======================*/
+/*========================= OrbitControls =========================*/
 //initialize the controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
@@ -117,7 +118,7 @@ controls.enableDamping = true;
 // controls.autoRotateSpeed = 1; //default is "2"
 // controls.enableZoom = true; //default is "false"
 
-/*============= resize the camera aspectRatio  ================*/
+/*================ resize the camera aspectRatio  =================*/
 //resize the camera aspectRatio when resizing the window
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -127,12 +128,12 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-/*============== render loop - make it animated ==============*/
+/*================= render loop - make it animated ================*/
 const renderLoop = () => {
   // rotate Meshes
-  group.children.forEach((child) => {
-    child.rotation.y += 0.005;
-  });
+  // group.children.forEach((child) => {
+  //   child.rotation.y += 0.005;
+  // });
 
   controls.update();
   renderer.render(scene, camera);
@@ -730,7 +731,7 @@ pane.addBinding(grassTexture, 'offset', {
 });
  
 
-?----------------------------------- UV Map 
+?---------------------------------------- UV Map 
 * In three.js, UV mapping involves assigning coordinates (U and V) to vertices رأس های of a 3D model, which correspond to points on the texture image. 
 
 * This mapping allows for "precise placement of textures" onto the surfaces of the model, ensuring that the texture wraps around the object correctly and appears as intended.
@@ -741,5 +742,35 @@ pane.addBinding(grassTexture, 'offset', {
 
 * In summary, UV mapping in three.js is a crucial technique for accurately applying textures to 3D models by assigning 'U' and 'V' coordinates to vertices. These coordinates determine how textures are wrapped around objects, enabling realistic rendering in web-based 3D graphics applications.
 
+?--- roughnessMap 
+- is a texture that defines how rough or smooth a surface appears.
+- In PBR, the roughness value determines how light scatters-spread or reflects off a material's surface.
+- A roughness map can be grayscale, where darker areas represent rougher surfaces and lighter areas represent smoother surfaces.
 
+      const grassRoughness = textureLoader.load(
+        '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_roughness.png'
+      );
+      material.roughnessMap = grassRoughness;
+      material.roughness = 1; <- rough | 0.1 -> smooth
+
+?--- metalnessMap
+- in PBR to define whether a material is metallic-shiny or non-metallic.
+- In the metalness map, white areas indicate metallic properties, while black areas indicate non-metallic properties.
+- control how light interacts with metallic surfaces, influencing the material's appearance and reflectivity.
+
+      const grassMetallic = textureLoader.load(
+        '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_metallic.png'
+      );
+      material.metalnessMap = grassMetallic;
+      material.metalness = 1;
+
+?--- normalMap
+- to create more realistic lighting effects. 
+- it simulates the small surface details of an object by adjusting how light interacts with its surface. This can add depth and realism to objects in a 3D scene.
+
+      const grassNormal = textureLoader.load(
+         '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-ogl.png'
+      );
+      material.normalMap = grassNormal;
+      
 */
