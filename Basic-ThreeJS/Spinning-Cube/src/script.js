@@ -50,19 +50,10 @@ scene.add(box, sphere, torusKnot, circle);
 scene.add(box2, sphere2, torusKnot2);
 
 // Initialize the light
-const ambientLight = new THREE.AmbientLight(
-  0xffffff, //or new THREE.Color('white')
-  0.4 //intensity
-);
+const hemisphereLight = new THREE.HemisphereLight('red', 'blue', 0.5);
+scene.add(hemisphereLight);
 
-scene.add(ambientLight);
-
-pane.addBinding(ambientLight, 'color', {
-  color: {
-    type: 'float',
-  },
-});
-pane.addBinding(ambientLight, 'intensity', {
+pane.addBinding(hemisphereLight, 'intensity', {
   min: 0,
   max: 1,
   step: 0.01,
@@ -986,7 +977,7 @@ scene.add(group);
 
 /* ========================= AmbientLight =============================
 - simulating indirect light that fills in shadows and adds overall brightness to the scene. 
-- It does not have a specific direction or position, and its intensity remains constant across all objects.
+? It does not have a specific direction or position, and its intensity remains constant across all objects.
 
 
 const ambientLight = new THREE.AmbientLight(
@@ -1008,7 +999,21 @@ pane.addBinding(ambientLight, 'intensity', {
 });
 */
 
-/* =========================  =============================
+/* ========================= HemisphereLight =============================
+- simulates ambient lighting in a scene. 
+? It consists of two colors: one for the sky (top hemisphere) and one for the ground (bottom hemisphere). 
+- This light type is often used to create a soft, even lighting effect that mimics natural light conditions.
+
+- when combined with other types of lights like directional or point lights. By adjusting the colors and intensity of the sky and ground components, developers can achieve various lighting effects to enhance the visual appeal of their 3D projects.
+
+const hemisphereLight = new THREE.HemisphereLight('red', 'blue', 0.5);
+scene.add(hemisphereLight);
+
+pane.addBinding(hemisphereLight, 'intensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
 
 */
 
