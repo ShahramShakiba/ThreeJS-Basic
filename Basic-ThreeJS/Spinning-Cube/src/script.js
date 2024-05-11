@@ -17,29 +17,32 @@ const sphereGeometry = new THREE.SphereGeometry(0.6, 32, 32);
 const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
 
 // Initialize the Texture
-const grassTexture = textureLoader.load(
-  'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
+const grassAlbedo = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
 );
-grassTexture.repeat.set(3, 3);
-grassTexture.wrapS = THREE.RepeatWrapping;
-grassTexture.wrapT = THREE.RepeatWrapping;
-
-pane.addBinding(grassTexture, 'offset', {
-  x: {
-    min: -1,
-    max: 1,
-    step: 0.01,
-  },
-  y: {
-    min: -1,
-    max: 1,
-    step: 0.01,
-  },
-});
+const grassAo = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_ao.png'
+);
+const grassHeight = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_height.png'
+);
+const grassMetallic = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_metallic.png'
+);
+const grassNormal = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-olg.png'
+);
+const grassRoughness = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_roughness.png'
+);
 
 // Initialize the Material
-const material = new THREE.MeshBasicMaterial();
-material.map = grassTexture;
+const material = new THREE.MeshStandardMaterial();
+material.map = grassAlbedo;
+material.roughnessMap = grassRoughness;
+material.roughness = 1;
+material.metalnessMap = grassMetallic;
+material.metalness = 1;
 
 // Initialize the Mesh
 const cube = new THREE.Mesh(geometry, material);
@@ -47,8 +50,6 @@ const knot = new THREE.Mesh(torusKnotGeometry, material);
 knot.position.x = 1.7;
 const plane = new THREE.Mesh(planeGeometry, material);
 plane.position.x = -1.6;
-plane.rotation.x = -(Math.PI * 0.5); // rotate 90deg
-plane.scale.set(1000, 1000);
 
 const sphere = new THREE.Mesh(sphereGeometry, material);
 sphere.position.y = 1.4;
@@ -59,11 +60,11 @@ cylinder.position.y = -1.4;
 const group = new THREE.Group();
 
 // Add the Meshes to the Scene
-// group.add(cube, knot, plane, sphere, cylinder);
-scene.add(plane);
+group.add(cube, knot, plane, sphere, cylinder);
+scene.add(group);
 
 // Initialize the Light                      intensity
-const light = new THREE.AmbientLight(0xffffff, 0.08);
+const light = new THREE.AmbientLight(0xffffff, 0.2);
 const pointLight = new THREE.PointLight(0xffff23, 40);
 pointLight.position.set(5, 5, 5);
 
@@ -129,9 +130,9 @@ window.addEventListener('resize', () => {
 /*============== render loop - make it animated ==============*/
 const renderLoop = () => {
   // rotate Meshes
-  // group.children.forEach((child) => {
-  //   child.rotation.y += 0.005;
-  // });
+  group.children.forEach((child) => {
+    child.rotation.y += 0.005;
+  });
 
   controls.update();
   renderer.render(scene, camera);
@@ -727,4 +728,18 @@ pane.addBinding(grassTexture, 'offset', {
     step: 0.01,
   },
 });
+ 
+
+?----------------------------------- UV Map 
+* In three.js, UV mapping involves assigning coordinates (U and V) to vertices رأس های of a 3D model, which correspond to points on the texture image. 
+
+* This mapping allows for "precise placement of textures" onto the surfaces of the model, ensuring that the texture wraps around the object correctly and appears as intended.
+    - Which part of the texture map on which part of these geometries
+
+- The 'U' and 'V' values represent "horizontal" and "vertical" coordinates, respectively, on the 2D texture image. 
+- When applying a texture to a 3D object using UV mapping, these coordinates dictate which part of the texture should be mapped to each vertex of the object. 
+
+* In summary, UV mapping in three.js is a crucial technique for accurately applying textures to 3D models by assigning 'U' and 'V' coordinates to vertices. These coordinates determine how textures are wrapped around objects, enabling realistic rendering in web-based 3D graphics applications.
+
+
 */
