@@ -11,10 +11,36 @@ const textureLoader = new THREE.TextureLoader();
 /*================= Mesh | add objects to the scene =================*/
 // Initialize the Geometry
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const planeGeometry = new THREE.PlaneGeometry(1, 1);
+const uv2Geometry = new THREE.BufferAttribute(geometry.attributes.uv.array, 2);
+geometry.setAttribute('uv2', uv2Geometry);
+
 const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+const uv2TorusKnotGeometry = new THREE.BufferAttribute(
+  torusKnotGeometry.attributes.uv.array,
+  2
+);
+torusKnotGeometry.setAttribute('uv2', uv2TorusKnotGeometry);
+
+const planeGeometry = new THREE.PlaneGeometry(1, 1);
+const uv2PlaneGeometry = new THREE.BufferAttribute(
+  planeGeometry.attributes.uv.array,
+  2
+);
+planeGeometry.setAttribute('uv2', uv2PlaneGeometry);
+
 const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+const uv2SphereGeometry = new THREE.BufferAttribute(
+  sphereGeometry.attributes.uv.array,
+  2
+);
+sphereGeometry.setAttribute('uv2', uv2SphereGeometry);
+
 const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
+const uv2CylinderGeometry = new THREE.BufferAttribute(
+  cylinderGeometry.attributes.uv.array,
+  2
+);
+cylinderGeometry.setAttribute('uv2', uv2CylinderGeometry);
 
 // Initialize the Texture
 const grassAlbedo = textureLoader.load(
@@ -45,7 +71,14 @@ material.metalnessMap = grassMetallic;
 material.metalness = 1;
 material.normalMap = grassNormal;
 material.displacementMap = grassHeight;
-material.displacementScale = 0.2;
+material.displacementScale = 0.1;
+material.aoMap = grassAo;
+
+pane.addBinding(material, 'aoMapIntensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
 
 // Initialize the Mesh
 const cube = new THREE.Mesh(geometry, material);
@@ -786,4 +819,56 @@ pane.addBinding(grassTexture, 'offset', {
       material.displacementMap = grassHeight;
       material.displacementScale = 0.2;
 
+?--- aoMap
+-  aoMap refers to Ambient Occlusion{obstruction} Mapping, a technique used to enhance the "realism" and "depth" of 3D scenes by simulating how ambient light interacts with objects in a scene. 
+- Ambient occlusion helps create more realistic shadows and shading by taking into account how objects block ambient light from reaching certain areas.
+
+* ********* The aoMap requires a second set of "UVs". **********
+* The reason why aoMap needs a second set of UVs is that ambient occlusion calculations require a separate UV mapping for better accuracy. 
+*   - The primary UV coordinates are typically used { for texture mapping }, 
+*   - while the secondary set of UV coordinates is specifically {dedicated to
+*     ambient occlusion calculations}. 
+* By having a separate set of UVs, three.js can accurately calculate how ambient light interacts with the geometry in the scene.
+
+      ? BufferAttribute = stores data in a more optimized format     
+      ?                     item-size: 2 - since uv only has a Width & Height
+      const geometry = new THREE.BoxGeometry(1, 1, 1);
+      const uv2Geometry = new THREE.BufferAttribute(geometry.attributes.uv.array, 2);
+      geometry.setAttribute('uv2', uv2Geometry);
+
+      const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+      const uv2TorusKnotGeometry = new THREE.BufferAttribute(
+        torusKnotGeometry.attributes.uv.array,
+        2
+      );
+      torusKnotGeometry.setAttribute('uv2', uv2TorusKnotGeometry);
+
+      const planeGeometry = new THREE.PlaneGeometry(1, 1);
+      const uv2PlaneGeometry = new THREE.BufferAttribute(
+        planeGeometry.attributes.uv.array,
+        2
+      );
+      planeGeometry.setAttribute('uv2', uv2PlaneGeometry);
+
+      const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+      const uv2SphereGeometry = new THREE.BufferAttribute(
+        sphereGeometry.attributes.uv.array,
+        2
+      );
+      sphereGeometry.setAttribute('uv2', uv2SphereGeometry);
+
+      const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
+      const uv2CylinderGeometry = new THREE.BufferAttribute(
+        cylinderGeometry.attributes.uv.array,
+        2
+      );
+      cylinderGeometry.setAttribute('uv2', uv2CylinderGeometry);
+
+
+      material.aoMap = grassAo;
+      pane.addBinding(material, 'aoMapIntensity', {
+        min: 0,
+        max: 1,
+        step: 0.01,
+      });
 */
