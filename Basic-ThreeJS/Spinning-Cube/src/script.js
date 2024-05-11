@@ -6,206 +6,67 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 //a container for other objects
 const scene = new THREE.Scene();
 const pane = new Pane();
-const textureLoader = new THREE.TextureLoader();
 
 /*================= Mesh | add objects to the scene =================*/
 // Initialize the Geometry
-const geometry = new THREE.SphereGeometry(1, 32, 32);
-const uv2Geometry = new THREE.BufferAttribute(geometry.attributes.uv.array, 2);
-geometry.setAttribute('uv2', uv2Geometry);
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+const sphereGeometry = new THREE.SphereGeometry(0.75, 32, 32);
+const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.2, 100, 16);
+const circleGeometry = new THREE.CircleGeometry(0.5, 32);
 
-// Load the grass textures
-const grassAlbedo = textureLoader.load(
-  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
-);
-const grassAo = textureLoader.load(
-  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_ao.png'
-);
-const grassHeight = textureLoader.load(
-  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_height.png'
-);
-const grassMetallic = textureLoader.load(
-  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_metallic.png'
-);
-const grassNormal = textureLoader.load(
-  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-ogl.png'
-);
-const grassRoughness = textureLoader.load(
-  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_roughness.png'
-);
-
-// Load the boulders textures
-const boulderAlbedo = textureLoader.load(
-  '/textures/badlands-boulders-bl/badlands-boulders_albedo.png'
-);
-const boulderAo = textureLoader.load(
-  '/textures/badlands-boulders-bl/badlands-boulders_ao.png'
-);
-const boulderHeight = textureLoader.load(
-  '/textures/badlands-boulders-bl/badlands-boulders_height.png'
-);
-const boulderMetallic = textureLoader.load(
-  '/textures/badlands-boulders-bl/badlands-boulders_metallic.png'
-);
-const boulderNormal = textureLoader.load(
-  '/textures/badlands-boulders-bl/badlands-boulders_normal-ogl.png'
-);
-const boulderRoughness = textureLoader.load(
-  '/textures/badlands-boulders-bl/badlands-boulders_roughness.png'
-);
-
-// Load the space cruiser textures
-const spaceCruiserAlbedo = textureLoader.load(
-  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
-);
-const spaceCruiserAo = textureLoader.load(
-  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_ao.png'
-);
-const spaceCruiserHeight = textureLoader.load(
-  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_height.png'
-);
-const spaceCruiserMetallic = textureLoader.load(
-  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_metallic.png'
-);
-const spaceCruiserNormal = textureLoader.load(
-  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_normal-ogl.png'
-);
-const spaceCruiserRoughness = textureLoader.load(
-  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_roughness.png'
-);
-
-// grass material
-const grassPane = pane.addFolder({
-  title: 'Grass Material',
-  expanded: true,
+const material = new THREE.MeshStandardMaterial({
+  color: 0xffffff,
+  metalness: 0.0,
+  roughness: 0.5,
 });
 
-// Initialize the Material
-const grassMaterial = new THREE.MeshStandardMaterial({
-  map: grassAlbedo,
-  roughnessMap: grassRoughness,
-  metalnessMap: grassMetallic,
-  normalMap: grassNormal,
-  displacementMap: grassHeight,
-  displacementScale: 0.1,
-  aoMap: grassAo
-});
+const box = new THREE.Mesh(boxGeometry, material);
+box.position.x = -2;
 
-grassPane.addBinding(grassMaterial, 'metalness', {
+const box2 = new THREE.Mesh(boxGeometry, material);
+box2.position.x = -2;
+box2.position.z = -2;
+
+const sphere = new THREE.Mesh(sphereGeometry, material);
+sphere.position.x = 0;
+
+const sphere2 = new THREE.Mesh(sphereGeometry, material);
+sphere2.position.x = 0;
+sphere2.position.z = -2;
+
+const torusKnot = new THREE.Mesh(torusKnotGeometry, material);
+torusKnot.position.x = 2;
+
+const torusKnot2 = new THREE.Mesh(torusKnotGeometry, material);
+torusKnot2.position.x = 2;
+torusKnot2.position.z = -2;
+
+const circle = new THREE.Mesh(circleGeometry, material);
+circle.scale.setScalar(20);
+circle.position.y = -2;
+circle.rotation.x = -Math.PI / 2;
+
+scene.add(box, sphere, torusKnot, circle);
+scene.add(box2, sphere2, torusKnot2);
+
+// Initialize the light
+const ambientLight = new THREE.AmbientLight(
+  0xffffff, //or new THREE.Color('white')
+  0.4 //intensity
+);
+
+scene.add(ambientLight);
+
+pane.addBinding(ambientLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(ambientLight, 'intensity', {
   min: 0,
   max: 1,
   step: 0.01,
 });
-grassPane.addBinding(grassMaterial, 'roughness', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-grassPane.addBinding(grassMaterial, 'displacementScale', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-grassPane.addBinding(grassMaterial, 'aoMapIntensity', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-
-// boulder material
-const boulderPane = pane.addFolder({
-  title: 'Boulder Material',
-  expanded: true,
-});
-
-const boulderMaterial = new THREE.MeshStandardMaterial({
-  map: boulderAlbedo,
-  roughnessMap: boulderRoughness,
-  metalnessMap: boulderMetallic,
-  normalMap: boulderNormal,
-  displacementMap: boulderHeight,
-  displacementScale: 0.1,
-  aoMap: boulderAo
-});
-
-boulderPane.addBinding(boulderMaterial, 'metalness', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-boulderPane.addBinding(boulderMaterial, 'roughness', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-boulderPane.addBinding(boulderMaterial, 'displacementScale', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-boulderPane.addBinding(boulderMaterial, 'aoMapIntensity', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-
-// boulder material
-const spaceCruiserPane = pane.addFolder({
-  title: 'Space Cruiser Material',
-  expanded: true,
-});
-
-const spaceCruiserMaterial = new THREE.MeshStandardMaterial({
-  map: spaceCruiserAlbedo,
-  roughnessMap: spaceCruiserRoughness,
-  metalnessMap: spaceCruiserMetallic,
-  normalMap: spaceCruiserNormal,
-  displacementMap: spaceCruiserHeight,
-  displacementScale: 0.1,
-  aoMap: spaceCruiserAo
-});
-
-spaceCruiserPane.addBinding(spaceCruiserMaterial, 'metalness', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-spaceCruiserPane.addBinding(spaceCruiserMaterial, 'roughness', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-spaceCruiserPane.addBinding(spaceCruiserMaterial, 'displacementScale', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-spaceCruiserPane.addBinding(spaceCruiserMaterial, 'aoMapIntensity', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-
-// Initialize the Mesh
-const grass = new THREE.Mesh(geometry, grassMaterial);
-const boulder = new THREE.Mesh(geometry, boulderMaterial);
-boulder.position.x = 2.5;
-const spaceCruiser = new THREE.Mesh(geometry, spaceCruiserMaterial);
-spaceCruiser.position.x = -2.5;
-
-// Initialize a Group
-const group = new THREE.Group()
-group.add(grass, boulder, spaceCruiser )
-
-// Add the mesh to the scene
-scene.add(group);
-
-// Initialize the Light                      intensity
-const light = new THREE.AmbientLight(0xffffff, 0.2);
-const pointLight = new THREE.PointLight(0xffff23, 15);
-pointLight.position.set(5, 5, 5);
-
-scene.add(light, pointLight);
 
 /*====================== PerspectiveCamera ========================*/
 const camera = new THREE.PerspectiveCamera(
@@ -257,7 +118,7 @@ window.addEventListener('resize', () => {
 const renderLoop = () => {
   // rotate Meshes
   // group.children.forEach((child) => {
-  //   child.rotation.y += 0.005;
+  //   child.rotation.y += 0.003;
   // });
 
   controls.update();
@@ -787,11 +648,11 @@ const renderLoop = () => {
 
 /* ============================ 3D Texture =============================
 ?- https://freepbr.com/
-    Provides "PBR" materials and texture files.  
+  * Provides "PBR" materials and texture files.  
     My free PBR, or Physically-Based Rendering materials offer the "metalness" / "roughness" as well as the "metallic" / "smoothness" workflows.  
     These 2K texture maps can be used in "Unreal Engine", "Unity", "Blender" and many other 3D, "Game Design", and "CAD solutions". 
 
-* Texture is just part of "Material"
+  * Texture is just part of "Material"
 
 ? import texture and turn it into a texture that Three.js is able to recognize:
     const textureLoader = new THREE.TextureLoader();
@@ -809,7 +670,7 @@ const renderLoop = () => {
 *--------------------------------- Manipulate Textures
 const grassTexture = textureLoader.load(
   'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
-);
+);                      H  V
 grassTexture.repeat.set(2, 2);
 ?------------ RepeatWrapping
 grassTexture.wrapS = THREE.RepeatWrapping;
@@ -878,7 +739,7 @@ pane.addBinding(grassTexture, 'offset', {
 * In summary, UV mapping in three.js is a crucial technique for accurately applying textures to 3D models by assigning 'U' and 'V' coordinates to vertices. These coordinates determine how textures are wrapped around objects, enabling realistic rendering in web-based 3D graphics applications.
 
 ?--- roughnessMap 
-- is a texture that defines how rough or smooth a surface appears.
+- is a texture that defines [how rough or smooth a surface appears].
 - In PBR, the roughness value determines how light scatters-spread or reflects off a material's surface.
 - A roughness map can be grayscale, where darker areas represent rougher surfaces and lighter areas represent smoother surfaces.
 
@@ -889,7 +750,7 @@ pane.addBinding(grassTexture, 'offset', {
       material.roughness = 1; <- rough | 0.1 -> smooth
 
 ?--- metalnessMap
-- in PBR to define whether a material is metallic-shiny or non-metallic.
+- in PBR to define whether [a material is metallic-shiny or non-metallic].
 - In the metalness map, white areas indicate metallic properties, while black areas indicate non-metallic properties.
 - control how light interacts with metallic surfaces, influencing the material's appearance and reflectivity.
 
@@ -900,17 +761,17 @@ pane.addBinding(grassTexture, 'offset', {
       material.metalness = 1;
 
 ?--- normalMap
-- to create more realistic lighting effects. 
-- it simulates the small surface details of an object by adjusting how light interacts with its surface. This can add depth and realism to objects in a 3D scene.
+- to create [more realistic lighting effects]. 
+- it simulates the small surface details of an object by adjusting how light interacts with its surface. This can _add depth and realism_ to objects in a 3D scene.
 
       const grassNormal = textureLoader.load(
          '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-ogl.png'
       );
       material.normalMap = grassNormal;
 
-?--- heightMap 
--  a feature that allows for the distortion or displacement of vertices in a mesh based on a texture map.
-- This texture map is typically a grayscale image where lighter areas correspond to higher displacements and darker areas correspond to lower displacements.
+?--- heightMap - displacementMap
+-  a feature that allows [for the distortion or displacement of vertices] in a mesh based on a texture map.
+- This texture map is typically a grayscale image where (lighter areas correspond to higher displacements) and darker areas correspond to lower displacements.
 - When applied to a mesh, the displacement map alters the positions of the vertices along their normals, creating a visually interesting effect of height variation. This can be used to simulate effects like bumps, ripples, or other forms of surface deformation in 3D objects.
 
       const grassHeight = textureLoader.load(
@@ -920,8 +781,8 @@ pane.addBinding(grassTexture, 'offset', {
       material.displacementScale = 0.2;
 
 ?--- aoMap
--  aoMap refers to Ambient Occlusion{obstruction} Mapping, a technique used to enhance the "realism" and "depth" of 3D scenes by simulating how ambient light interacts with objects in a scene. 
-- Ambient occlusion helps create more realistic shadows and shading by taking into account how objects block ambient light from reaching certain areas.
+-  aoMap refers to Ambient{environment} Occlusion{blockage} Mapping, a technique [used to enhance the "realism" and "depth" of 3D scenes] by simulating how ambient light interacts with objects in a scene. 
+- Ambient occlusion helps (create more realistic shadows and shading) by taking into account how objects block ambient light from reaching certain areas.
 
 * ********* The aoMap requires a second set of "UVs". **********
 * The reason why aoMap needs a second set of UVs is that ambient occlusion calculations require a separate UV mapping for better accuracy. 
@@ -930,45 +791,235 @@ pane.addBinding(grassTexture, 'offset', {
 *     ambient occlusion calculations}. 
 * By having a separate set of UVs, three.js can accurately calculate how ambient light interacts with the geometry in the scene.
 
+      const geometry = new THREE.BoxGeometry(1, 1, 1);
       ? BufferAttribute = stores data in a more optimized format     
       ?                     item-size: 2 - since uv only has a Width & Height
-      const geometry = new THREE.BoxGeometry(1, 1, 1);
       const uv2Geometry = new THREE.BufferAttribute(geometry.attributes.uv.array, 2);
       geometry.setAttribute('uv2', uv2Geometry);
 
-      const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
-      const uv2TorusKnotGeometry = new THREE.BufferAttribute(
-        torusKnotGeometry.attributes.uv.array,
-        2
-      );
-      torusKnotGeometry.setAttribute('uv2', uv2TorusKnotGeometry);
+? Load the grass textures
+const grassAlbedo = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
+);
+const grassAo = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_ao.png'
+);
+const grassHeight = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_height.png'
+);
+const grassMetallic = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_metallic.png'
+);
+const grassNormal = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-ogl.png'
+);
+const grassRoughness = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_roughness.png'
+);
 
-      const planeGeometry = new THREE.PlaneGeometry(1, 1);
-      const uv2PlaneGeometry = new THREE.BufferAttribute(
-        planeGeometry.attributes.uv.array,
-        2
-      );
-      planeGeometry.setAttribute('uv2', uv2PlaneGeometry);
+? Load the boulders textures
+const boulderAlbedo = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_albedo.png'
+);
+const boulderAo = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_ao.png'
+);
+const boulderHeight = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_height.png'
+);
+const boulderMetallic = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_metallic.png'
+);
+const boulderNormal = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_normal-ogl.png'
+);
+const boulderRoughness = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_roughness.png'
+);
 
-      const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-      const uv2SphereGeometry = new THREE.BufferAttribute(
-        sphereGeometry.attributes.uv.array,
-        2
-      );
-      sphereGeometry.setAttribute('uv2', uv2SphereGeometry);
+? Load the space cruiser textures
+const spaceCruiserAlbedo = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
+);
+const spaceCruiserAo = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_ao.png'
+);
+const spaceCruiserHeight = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_height.png'
+);
+const spaceCruiserMetallic = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_metallic.png'
+);
+const spaceCruiserNormal = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_normal-ogl.png'
+);
+const spaceCruiserRoughness = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_roughness.png'
+);
 
-      const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
-      const uv2CylinderGeometry = new THREE.BufferAttribute(
-        cylinderGeometry.attributes.uv.array,
-        2
-      );
-      cylinderGeometry.setAttribute('uv2', uv2CylinderGeometry);
+? grass material
+const grassPane = pane.addFolder({
+  title: 'Grass Material',
+  expanded: true,
+});
+
+? Initialize the Material
+const grassMaterial = new THREE.MeshStandardMaterial({
+  map: grassAlbedo,
+  roughnessMap: grassRoughness,
+  metalnessMap: grassMetallic,
+  normalMap: grassNormal,
+  displacementMap: grassHeight,
+  displacementScale: 0.1,
+  aoMap: grassAo
+});
+
+grassPane.addBinding(grassMaterial, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+grassPane.addBinding(grassMaterial, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+grassPane.addBinding(grassMaterial, 'displacementScale', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+grassPane.addBinding(grassMaterial, 'aoMapIntensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+
+? boulder material
+const boulderPane = pane.addFolder({
+  title: 'Boulder Material',
+  expanded: true,
+});
+
+const boulderMaterial = new THREE.MeshStandardMaterial({
+  map: boulderAlbedo,
+  roughnessMap: boulderRoughness,
+  metalnessMap: boulderMetallic,
+  normalMap: boulderNormal,
+  displacementMap: boulderHeight,
+  displacementScale: 0.1,
+  aoMap: boulderAo
+});
+
+boulderPane.addBinding(boulderMaterial, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+boulderPane.addBinding(boulderMaterial, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+boulderPane.addBinding(boulderMaterial, 'displacementScale', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+boulderPane.addBinding(boulderMaterial, 'aoMapIntensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+
+? boulder material
+const spaceCruiserPane = pane.addFolder({
+  title: 'Space Cruiser Material',
+  expanded: true,
+});
+
+const spaceCruiserMaterial = new THREE.MeshStandardMaterial({
+  map: spaceCruiserAlbedo,
+  roughnessMap: spaceCruiserRoughness,
+  metalnessMap: spaceCruiserMetallic,
+  normalMap: spaceCruiserNormal,
+  displacementMap: spaceCruiserHeight,
+  displacementScale: 0.1,
+  aoMap: spaceCruiserAo
+});
+
+spaceCruiserPane.addBinding(spaceCruiserMaterial, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+spaceCruiserPane.addBinding(spaceCruiserMaterial, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+spaceCruiserPane.addBinding(spaceCruiserMaterial, 'displacementScale', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+spaceCruiserPane.addBinding(spaceCruiserMaterial, 'aoMapIntensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+
+? Initialize the Mesh
+const grass = new THREE.Mesh(geometry, grassMaterial);
+const boulder = new THREE.Mesh(geometry, boulderMaterial);
+boulder.position.x = 2.5;
+const spaceCruiser = new THREE.Mesh(geometry, spaceCruiserMaterial);
+spaceCruiser.position.x = -2.5;
+
+? Initialize a Group
+const group = new THREE.Group()
+group.add(grass, boulder, spaceCruiser )
+
+? Add the mesh to the scene
+scene.add(group);
+*/
+
+/* ========================= AmbientLight =============================
+- simulating indirect light that fills in shadows and adds overall brightness to the scene. 
+- It does not have a specific direction or position, and its intensity remains constant across all objects.
 
 
-      material.aoMap = grassAo;
-      pane.addBinding(material, 'aoMapIntensity', {
-        min: 0,
-        max: 1,
-        step: 0.01,
-      });
+const ambientLight = new THREE.AmbientLight(
+  0xffffff, //or new THREE.Color('white')
+  0.4 //intensity
+);
+
+scene.add(ambientLight);
+
+pane.addBinding(ambientLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(ambientLight, 'intensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+*/
+
+/* =========================  =============================
+
+*/
+
+/* =========================  =============================
+
+*/
+
+/* =========================  =============================
+
+*/
+
+/* =========================  =============================
+
 */
