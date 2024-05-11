@@ -44,6 +44,8 @@ material.roughness = 1;
 material.metalnessMap = grassMetallic;
 material.metalness = 1;
 material.normalMap = grassNormal;
+material.displacementMap = grassHeight;
+material.displacementScale = 0.2;
 
 // Initialize the Mesh
 const cube = new THREE.Mesh(geometry, material);
@@ -772,5 +774,16 @@ pane.addBinding(grassTexture, 'offset', {
          '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-ogl.png'
       );
       material.normalMap = grassNormal;
-      
+
+?--- heightMap 
+-  a feature that allows for the distortion or displacement of vertices in a mesh based on a texture map.
+- This texture map is typically a grayscale image where lighter areas correspond to higher displacements and darker areas correspond to lower displacements.
+- When applied to a mesh, the displacement map alters the positions of the vertices along their normals, creating a visually interesting effect of height variation. This can be used to simulate effects like bumps, ripples, or other forms of surface deformation in 3D objects.
+
+      const grassHeight = textureLoader.load(
+        '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_height.png'
+      );
+      material.displacementMap = grassHeight;
+      material.displacementScale = 0.2;
+
 */
