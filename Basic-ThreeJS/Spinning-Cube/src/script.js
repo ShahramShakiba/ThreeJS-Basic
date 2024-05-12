@@ -2,7 +2,6 @@
 import * as THREE from 'three';
 import { Pane } from 'tweakpane';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
 
 //a container for other objects
 const scene = new THREE.Scene();
@@ -11,51 +10,27 @@ const pane = new Pane();
 //=========== Initialize the Material
 const material = new THREE.MeshStandardMaterial({
   color: 0xffffff,
-  metalness: 0.0,
-  roughness: 0.1,
+  metalness: 0,
+  roughness: 0,
 });
-
-const materialFolder = pane.addFolder({
-  title: 'Material',
-  expanded: true,
-});
-
-materialFolder.addBinding(material, 'metalness', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-materialFolder.addBinding(material, 'roughness', {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-materialFolder.addBinding(material, 'color', { color: { type: 'float' } });
 
 //=========== Initialize the Mesh
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const sphereGeometry = new THREE.SphereGeometry(0.75, 8, 8);
+const sphereGeometry = new THREE.SphereGeometry(0.75, 32, 32);
 const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.2, 100, 16);
 const circleGeometry = new THREE.CircleGeometry(0.5, 32);
 
 const box = new THREE.Mesh(boxGeometry, material);
 box.position.x = -2;
-const box2 = new THREE.Mesh(boxGeometry, material);
-box2.position.x = -2;
-box2.position.z = -2;
+box.castShadow = true;
 
 const sphere = new THREE.Mesh(sphereGeometry, material);
 sphere.position.x = 0;
 sphere.castShadow = true;
-const sphere2 = new THREE.Mesh(sphereGeometry, material);
-sphere2.position.x = 0;
-sphere2.position.z = -2;
 
 const torusKnot = new THREE.Mesh(torusKnotGeometry, material);
 torusKnot.position.x = 2;
-const torusKnot2 = new THREE.Mesh(torusKnotGeometry, material);
-torusKnot2.position.x = 2;
-torusKnot2.position.z = -2;
+torusKnot.castShadow = true;
 
 const circle = new THREE.Mesh(circleGeometry, material);
 circle.scale.setScalar(20);
@@ -64,127 +39,31 @@ circle.rotation.x = -Math.PI / 2;
 circle.receiveShadow = true;
 
 scene.add(box, sphere, torusKnot, circle);
-scene.add(box2, sphere2, torusKnot2);
 
-//=================== Initialize the light =======================
-//_________ambientLight
-const ambientLight = new THREE.AmbientLight(new THREE.Color(0xc870ff), 0.2);
-scene.add(ambientLight);
-const ambientLightFolder = pane.addFolder({
-  title: "Ambient Light",
-  expanded: true,
-});
-ambientLightFolder.addBinding(ambientLight, "intensity", {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-ambientLightFolder.addBinding(ambientLight, "color", {
-  color: { type: "float" },
-});
-
-//__________hemisphericLight
-const hemisphericLight = new THREE.HemisphereLight(
-  new THREE.Color(0xff0000),
-  new THREE.Color(0x0000ff),
-  0.1
-);
-hemisphericLight.position.set(0, 10, 0);
-scene.add(hemisphericLight);
-const hemisphericLightHelper = new THREE.HemisphereLightHelper(
-  hemisphericLight
-);
-scene.add(hemisphericLightHelper);
-const hemisphericLightFolder = pane.addFolder({
-  title: "Hemispheric Light",
-  expanded: true,
-});
-hemisphericLightFolder.addBinding(hemisphericLight, "intensity", {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-hemisphericLightFolder.addBinding(hemisphericLight, "color", {
-  color: { type: "float" },
-});
-hemisphericLightFolder.addBinding(hemisphericLight, "groundColor", {
-  color: { type: "float" },
-});
-
-//__________directionalLight
-const directionalLight = new THREE.DirectionalLight(0x59ffe9, 0.2);
+//======= Initialize the light
+const directionalLight = new THREE.DirectionalLight(0xff0000, 0.6);
 directionalLight.position.set(3, 10, 15);
 scene.add(directionalLight);
-const directionalLightHelper = new THREE.DirectionalLightHelper(
-  directionalLight
-);
-scene.add(directionalLightHelper);
-const directionalLightFolder = pane.addFolder({
-  title: "Directional Light",
-  expanded: true,
-});
-directionalLightFolder.addBinding(directionalLight, "intensity", {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-directionalLightFolder.addBinding(directionalLight, "color", {
-  color: {
-    type: "float",
-  },
-});
+directionalLight.castShadow = true;
+// const directionalLightHelper = new THREE.DirectionalLightHelper(
+//   directionalLight
+// );
+// scene.add(directionalLightHelper);
 
-//__________pointLight
-const pointLight = new THREE.PointLight(0xff810a, 0.5);
+const pointLight = new THREE.PointLight(0x00ff00, 10);
 pointLight.position.set(-3, 2, -3);
 scene.add(pointLight);
-const pointLightHelper = new THREE.PointLightHelper(pointLight);
-scene.add(pointLightHelper);
-const pointLightFolder = pane.addFolder({
-  title: "Point Light",
-  expanded: true,
-});
-pointLightFolder.addBinding(pointLight, "intensity", {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-pointLightFolder.addBinding(pointLight, "color", { color: { type: "float" } });
+pointLight.castShadow = true;
+// const pointLightHelper = new THREE.PointLightHelper(pointLight);
+// scene.add(pointLightHelper);
 
-//__________rectAreaLight
-const rectAreaLight = new THREE.RectAreaLight(0xff0000, 0.5, 10, 10);
-rectAreaLight.position.set(-10, 5, 5);
-scene.add(rectAreaLight);
-rectAreaLight.lookAt(0, 0, 0);
-const rectAreaLightHelper = new RectAreaLightHelper(rectAreaLight);
-scene.add(rectAreaLightHelper);
-const rectAreaLightFolder = pane.addFolder({
-  title: "Rect Area Light",
-  expanded: true,
-});
-rectAreaLightFolder.addBinding(rectAreaLight, "intensity", {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-rectAreaLightFolder.addBinding(rectAreaLight, "color", {
-  color: { type: "float" },
-});
-
-//__________spotLight
-const spotLight = new THREE.SpotLight(0x59ffe9, 0.5, 20, Math.PI * 0.1);
-spotLight.position.set(10, 5, 5);
+const spotLight = new THREE.SpotLight(0x0000ff, 10, 50, Math.PI * 0.1);
+spotLight.position.set(8, 4, 4);
 spotLight.target.position.set(0, -1, 0);
 scene.add(spotLight);
-const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-scene.add(spotLightHelper);
-const spotLightFolder = pane.addFolder({ title: "Spot Light", expanded: true });
-spotLightFolder.addBinding(spotLight, "intensity", {
-  min: 0,
-  max: 1,
-  step: 0.01,
-});
-spotLightFolder.addBinding(spotLight, "color", { color: { type: "float" } });
+spotLight.castShadow = true;
+// const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+// scene.add(spotLightHelper);
 
 /*====================== PerspectiveCamera ========================*/
 const camera = new THREE.PerspectiveCamera(
@@ -212,6 +91,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 //achieving higher resolution rendering
 const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
 renderer.setPixelRatio(maxPixelRatio);
+// shadows
+renderer.shadowMap.enabled = true;
 
 /*========================= OrbitControls =========================*/
 //initialize the controls
@@ -1257,6 +1138,8 @@ pane.addBinding(spotLight, 'intensity', {
 
 ? Rect area lights are often used in architectural visualization, product rendering, and other scenarios where realistic lighting is crucial.
 
+import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
+
 const rectAreaLight = new THREE.RectAreaLight(
   0x0e0aff,
   4,
@@ -1464,7 +1347,11 @@ spotLightFolder.addBinding(spotLight, "intensity", {
 spotLightFolder.addBinding(spotLight, "color", { color: { type: "float" } });
 */
 
-/* =========================  =============================
+/* ========================= Shadows =============================
+- Shadows help convey depth, spatial relationships, and realism in rendered scenes.
+
+- you need to set up a light source (such as directional light, point light, or spot light) 
+- and specify parameters like "shadow map resolution", "shadow bias", and "shadow camera settings".
 
 */
 
