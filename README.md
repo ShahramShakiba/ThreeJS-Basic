@@ -48,9 +48,11 @@
 
 <br/><br/>
 
- <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b" height="100%" width="52%" alt="Three.js Fundamentals"/> &nbsp; 
- <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/f29eaa50-3a5c-4755-905b-b65d54cac0b5" height="20%" width="42%" alt="Perspective Camera"/>
- <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/b9ee203c-af4e-429c-8544-c1ad1bb07478" height="30%" width="52%" alt="Three.js Metarial"/>
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b"  alt="Three.js Fundamentals" align='center'/> &nbsp;<br/>
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/b9ee203c-af4e-429c-8544-c1ad1bb07478" height="285px" width="55%" alt="Three.js Metarial"/> &nbsp;
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/f29eaa50-3a5c-4755-905b-b65d54cac0b5" height="285px" width="42%" alt="Perspective Camera"/> <br/>
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/a0b757bc-6ad3-4eb2-86e6-ea9a9705c908" height="274px" width="48%" alt="Three.js Lights"/> &nbsp;
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/da06ad86-7450-489f-b1e6-19fbbf448b64" height="274px" width="49%" alt="Three.js Lights"/>
 
 <br/>
 
