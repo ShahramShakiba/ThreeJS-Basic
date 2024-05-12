@@ -50,10 +50,25 @@ scene.add(box, sphere, torusKnot, circle);
 scene.add(box2, sphere2, torusKnot2);
 
 // Initialize the light
-const hemisphereLight = new THREE.HemisphereLight('red', 'blue', 0.5);
-scene.add(hemisphereLight);
+const directionLight = new THREE.DirectionalLight('white', 0.5);
+directionLight.position.x = 5;
+directionLight.position.z = 5;
+directionLight.position.y = 2;
 
-pane.addBinding(hemisphereLight, 'intensity', {
+const directionalLightHelper = new THREE.DirectionalLightHelper(
+  directionLight,
+  0.5
+);
+
+scene.add(directionLight);
+scene.add(directionalLightHelper);
+
+pane.addBinding(directionLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(directionLight, 'intensity', {
   min: 0,
   max: 1,
   step: 0.01,
@@ -61,7 +76,7 @@ pane.addBinding(hemisphereLight, 'intensity', {
 
 /*====================== PerspectiveCamera ========================*/
 const camera = new THREE.PerspectiveCamera(
-  25,
+  55,
   window.innerWidth / window.innerHeight,
   0.1,
   10000
@@ -1014,6 +1029,42 @@ pane.addBinding(hemisphereLight, 'intensity', {
   max: 1,
   step: 0.01,
 });
+
+*/
+
+/* ========================= Direction Light =============================
+- This type of light does not have a specific position in space but instead shines uniformly across the entire scene from a specified direction.
+- you can control various properties such as the color of the "light", "intensity", and the "direction" in which it shines. 
+? This type of light is commonly used to simulate "sunlight" or "moonlight" in a scene, creating realistic lighting effects and shadows.
+
+const directionLight = new THREE.DirectionalLight('white', 0.5);
+directionLight.position.x = -5;
+directionLight.position.z = 5;
+directionLight.position.y = 1;
+
+directionLight.target.position.set(0, 10, 0);
+
+const directionalLightHelper = new THREE.DirectionalLightHelper(
+  directionLight,
+  0.5
+);
+
+scene.add(directionLight);
+scene.add(directionalLightHelper);
+
+pane.addBinding(directionLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(directionLight, 'intensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+*/
+
+/* =========================  =============================
 
 */
 
