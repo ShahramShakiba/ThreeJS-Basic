@@ -23,7 +23,7 @@ const sun = new THREE.Mesh(sphereGeometry, sunMaterial);
 sun.scale.setScalar(6);
 
 const earth = new THREE.Mesh(sphereGeometry, earthMaterial);
-earth.position.x = 10;
+earth.position.x = 12;
 earth.scale.setScalar(1.6);
 
 const moon = new THREE.Mesh(sphereGeometry, moonMaterial);
@@ -31,9 +31,8 @@ moon.position.x = 2;
 moon.scale.setScalar(0.4);
 earth.add(moon);
 
-const group = new THREE.Group();
-group.add(sun, earth);
-scene.add(group);
+scene.add(sun);
+scene.add(earth);
 
 /*==================== Initialize the Camera ==================*/
 const camera = new THREE.PerspectiveCamera(
@@ -58,8 +57,9 @@ controls.maxDistance = 200;
 controls.minDistance = 20;
 // controls.dampingFactor = 0.8; //default is "0.05"
 // controls.autoRotate = true;
-// controls.autoRotateSpeed = 1; //default is "2"
-// controls.enableZoom = true; //default is "false"
+
+/*===================== Initialize a Clock ==================*/
+const clock = new THREE.Clock();
 
 /*===================== Add Resize Listener ==================*/
 window.addEventListener('resize', () => {
@@ -70,10 +70,15 @@ window.addEventListener('resize', () => {
 
 /*==================== Render Loop  ==========================*/
 const renderLoop = () => {
-  // rotate Meshes
-  // group.children.forEach((child) => {
-  //   child.rotation.y += 0.001;
-  // });
+  const elapsedTime = clock.getElapsedTime();
+
+  // animate Meshes
+  earth.rotation.y += 0.01;
+  earth.position.x = Math.sin(elapsedTime) * 12;
+  earth.position.z = Math.cos(elapsedTime) * 12;
+
+  moon.position.x = Math.sin(elapsedTime) * 2;
+  moon.position.z = Math.cos(elapsedTime) * 2;
 
   controls.update();
   renderer.render(scene, camera);
