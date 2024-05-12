@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { Pane } from 'tweakpane';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
 
 //a container for other objects
 const scene = new THREE.Scene();
@@ -50,44 +51,30 @@ scene.add(box, sphere, torusKnot, circle);
 scene.add(box2, sphere2, torusKnot2);
 
 //===== Initialize the light
-const spotLight = new THREE.SpotLight(0x59ffe9, 0.8);
-spotLight.position.x = 0;
-spotLight.position.y = 2;
-spotLight.position.z = 2;
+const rectAreaLight = new THREE.RectAreaLight(
+  0x0e0aff,
+  4,
+  6, //width
+  4 //height
+);
+rectAreaLight.position.x = 0;
+rectAreaLight.position.y = 1;
+rectAreaLight.position.z = 4;
+rectAreaLight.lookAt(0, 0, 3);
 
-const spotLightHelper = new THREE.SpotLightHelper(spotLight, 0.8);
+const rectAreaLightHelper = new RectAreaLightHelper(rectAreaLight, 0.5);
 
-scene.add(spotLight);
-scene.add(spotLightHelper);
+scene.add(rectAreaLight);
+scene.add(rectAreaLightHelper);
 
-pane.addBinding(spotLight, 'angle', {
- min:0,
- max: Math.PI / 2, // convert to deg
- step:0.01
-});
-pane.addBinding(spotLight, 'penumbra', {
- min:0, //sharp light 
- max: 1, //soft light
- step:0.01
-});
-pane.addBinding(spotLight, 'decay', {
- min:0,
- max: 5,
- step:0.01
-});
-pane.addBinding(spotLight, 'distance', {
- min:0,
- max: 10,
- step:0.01
-});
-pane.addBinding(spotLight, 'color', {
+pane.addBinding(rectAreaLight, 'color', {
   color: {
     type: 'float',
   },
 });
-pane.addBinding(spotLight, 'intensity', {
+pane.addBinding(rectAreaLight, 'intensity', {
   min: 0,
-  max: 1,
+  max: 10,
   step: 0.01,
 });
 
@@ -1156,8 +1143,38 @@ pane.addBinding(spotLight, 'intensity', {
 });
 */
 
-/* =========================  =============================
+/* ========================= RectAreaLight =============================
+- is a type of light source that emits light uniformly from a rectangular area in a scene.
+- can be used to simulate lighting effects in a more realistic manner by providing soft, diffused lighting across a surface.
 
+? Rect area lights are often used in architectural visualization, product rendering, and other scenarios where realistic lighting is crucial.
+
+const rectAreaLight = new THREE.RectAreaLight(
+  0x0e0aff,
+  4,
+  6, //width
+  4 //height
+);
+rectAreaLight.position.x = 0;
+rectAreaLight.position.y = 1;
+rectAreaLight.position.z = 4;
+rectAreaLight.lookAt(0, 0, 3);
+
+const rectAreaLightHelper = new RectAreaLightHelper(rectAreaLight, 0.5);
+
+scene.add(rectAreaLight);
+scene.add(rectAreaLightHelper);
+
+pane.addBinding(rectAreaLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(rectAreaLight, 'intensity', {
+  min: 0,
+  max: 10,
+  step: 0.01,
+});
 */
 
 /* =========================  =============================
