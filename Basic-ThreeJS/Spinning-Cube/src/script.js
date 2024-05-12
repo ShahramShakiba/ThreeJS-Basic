@@ -6,116 +6,225 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 //a container for other objects
 const scene = new THREE.Scene();
 const pane = new Pane();
+const textureLoader = new THREE.TextureLoader();
 
-//=========== Initialize the Material
-const material = new THREE.MeshStandardMaterial({
-  color: 0xffffff,
-  metalness: 0,
-  roughness: 0,
+//=================== Initialize the Geometry =====================
+const geometry = new THREE.SphereGeometry(1, 32, 32);
+const uv2Geometry = new THREE.BufferAttribute(geometry.attributes.uv.array, 2);
+geometry.setAttribute('uv2', uv2Geometry);
+
+//_______Load the grass textures
+const grassAlbedo = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
+);
+const grassAo = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_ao.png'
+);
+const grassHeight = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_height.png'
+);
+const grassMetallic = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_metallic.png'
+);
+const grassNormal = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-ogl.png'
+);
+const grassRoughness = textureLoader.load(
+  '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_roughness.png'
+);
+
+//_________Load the boulders textures
+const boulderAlbedo = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_albedo.png'
+);
+const boulderAo = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_ao.png'
+);
+const boulderHeight = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_height.png'
+);
+const boulderMetallic = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_metallic.png'
+);
+const boulderNormal = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_normal-ogl.png'
+);
+const boulderRoughness = textureLoader.load(
+  '/textures/badlands-boulders-bl/badlands-boulders_roughness.png'
+);
+
+//________Load the space cruiser textures
+const spaceCruiserAlbedo = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
+);
+const spaceCruiserAo = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_ao.png'
+);
+const spaceCruiserHeight = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_height.png'
+);
+const spaceCruiserMetallic = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_metallic.png'
+);
+const spaceCruiserNormal = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_normal-ogl.png'
+);
+const spaceCruiserRoughness = textureLoader.load(
+  '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_roughness.png'
+);
+
+//=================== Initialize the Material =====================
+//________grass material
+const grassPane = pane.addFolder({
+  title: 'Grass Material',
+  expanded: true,
 });
 
-//=========== Initialize the Mesh
-const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const sphereGeometry = new THREE.SphereGeometry(0.75, 32, 32);
-const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.2, 100, 16);
-const circleGeometry = new THREE.CircleGeometry(0.5, 32);
+const grassMaterial = new THREE.MeshStandardMaterial({
+  map: grassAlbedo,
+  roughnessMap: grassRoughness,
+  metalnessMap: grassMetallic,
+  normalMap: grassNormal,
+  displacementMap: grassHeight,
+  displacementScale: 0.1,
+  aoMap: grassAo,
+});
 
-const box = new THREE.Mesh(boxGeometry, material);
-box.position.x = -2;
-box.castShadow = true;
+grassPane.addBinding(grassMaterial, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+grassPane.addBinding(grassMaterial, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+grassPane.addBinding(grassMaterial, 'displacementScale', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+grassPane.addBinding(grassMaterial, 'aoMapIntensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
 
-const sphere = new THREE.Mesh(sphereGeometry, material);
-sphere.position.x = 0;
-sphere.castShadow = true;
+//______boulder Material
+const boulderPane = pane.addFolder({
+  title: 'Boulder Material',
+  expanded: true,
+});
 
-const torusKnot = new THREE.Mesh(torusKnotGeometry, material);
-torusKnot.position.x = 2;
-torusKnot.castShadow = true;
+const boulderMaterial = new THREE.MeshStandardMaterial({
+  map: boulderAlbedo,
+  roughnessMap: boulderRoughness,
+  metalnessMap: boulderMetallic,
+  normalMap: boulderNormal,
+  displacementMap: boulderHeight,
+  displacementScale: 0.1,
+  aoMap: boulderAo,
+});
 
-const circle = new THREE.Mesh(circleGeometry, material);
-circle.scale.setScalar(20);
-circle.position.y = -2;
-circle.rotation.x = -Math.PI / 2;
-circle.receiveShadow = true;
+boulderPane.addBinding(boulderMaterial, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+boulderPane.addBinding(boulderMaterial, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+boulderPane.addBinding(boulderMaterial, 'displacementScale', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+boulderPane.addBinding(boulderMaterial, 'aoMapIntensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
 
-scene.add(box, sphere, torusKnot, circle);
+//_______space Cruiser Material
+const spaceCruiserPane = pane.addFolder({
+  title: 'Space Cruiser Material',
+  expanded: true,
+});
 
-//==================== Initialize the light ============================
-//_____________direction-light____________________
-const directionalLight = new THREE.DirectionalLight(0xff0000, 0.6);
-directionalLight.position.set(3, 10, 15);
-scene.add(directionalLight);
-directionalLight.castShadow = true;
+const spaceCruiserMaterial = new THREE.MeshStandardMaterial({
+  map: spaceCruiserAlbedo,
+  roughnessMap: spaceCruiserRoughness,
+  metalnessMap: spaceCruiserMetallic,
+  normalMap: spaceCruiserNormal,
+  displacementMap: spaceCruiserHeight,
+  displacementScale: 0.1,
+  aoMap: spaceCruiserAo,
+});
 
-directionalLight.shadow.mapSize.width = 1024;
-directionalLight.shadow.mapSize.height = 1024;
-directionalLight.shadow.radius = 5;
+spaceCruiserPane.addBinding(spaceCruiserMaterial, 'metalness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+spaceCruiserPane.addBinding(spaceCruiserMaterial, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+spaceCruiserPane.addBinding(spaceCruiserMaterial, 'displacementScale', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+spaceCruiserPane.addBinding(spaceCruiserMaterial, 'aoMapIntensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
 
-directionalLight.shadow.camera.left = -1;
-directionalLight.shadow.camera.right = 1;
-directionalLight.shadow.camera.top = 1;
-directionalLight.shadow.camera.bottom = -1;
+//===================== Initialize the Mesh =======================
+const grass = new THREE.Mesh(geometry, grassMaterial);
+const boulder = new THREE.Mesh(geometry, boulderMaterial);
+boulder.position.x = 2.5;
+const spaceCruiser = new THREE.Mesh(geometry, spaceCruiserMaterial);
+spaceCruiser.position.x = -2.5;
 
-const directionLightCameraHelper = new THREE.CameraHelper(
-  directionalLight.shadow.camera
-);
-scene.add(directionLightCameraHelper);
-directionLightCameraHelper.visible = false;
+//________Initialize a Group & Add the Mesh to the scene
+const group = new THREE.Group();
+group.add(grass, boulder, spaceCruiser);
+scene.add(group);
 
-// const directionalLightHelper = new THREE.DirectionalLightHelper(
-//   directionalLight
-// );
-// scene.add(directionalLightHelper);
+// ================ Initialize the light ============================
+const light = new THREE.AmbientLight(0xffffff, 0.08);
+scene.add(light);
 
-//_____________point-light______________
-const pointLight = new THREE.PointLight(0x00ff00, 10);
-pointLight.position.set(-3, 2, -3);
+const pointLight = new THREE.PointLight(0xffffff, 30);
+pointLight.position.set(5, 5, 5);
 scene.add(pointLight);
-pointLight.castShadow = true;
 
-pointLight.shadow.mapSize.width = 1024;
-pointLight.shadow.mapSize.height = 1024;
-pointLight.shadow.radius = 5;
-
-// pointLight.shadow.camera.near = 10;
-pointLight.shadow.camera.far = 30;
-
-
-const pointLightCameraHelper = new THREE.CameraHelper(
-  pointLight.shadow.camera
+const pointLightHelper = new THREE.PointLightHelper(
+  pointLight,
+  0.5
 );
-scene.add(pointLightCameraHelper);
+scene.add(pointLightHelper);
 
-// const pointLightHelper = new THREE.PointLightHelper(pointLight);
-// scene.add(pointLightHelper);
-
-//______________spot-light_________________
-const spotLight = new THREE.SpotLight(0x0000ff, 70, 80, Math.PI * 0.1);
-spotLight.position.set(8, 4, 4);
-spotLight.target.position.set(0, -1, 0);
-scene.add(spotLight);
-spotLight.castShadow = true;
-spotLight.shadow.mapSize.width = 1024; // default is 512
-spotLight.shadow.mapSize.height = 1024;
-// to fix pixelated effect of shadows, if you have less shadows use -> 1024
-// if you have a lot of shadows -> stick to shadow maps of a lower resolution
-
-spotLight.shadow.camera.near = 1;
-spotLight.shadow.camera.far = 50;
-spotLight.shadow.camera.fov = 30;
-
-//blur the edges of the shadows
-spotLight.shadow.radius = 5;
-
-// const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-// scene.add(spotLightHelper);
-
-// const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
-// scene.add(spotLightCameraHelper);
+pane.addBinding(pointLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(pointLight, 'intensity', {
+  min: 0,
+  max: 70,
+  step: 5,
+});
 
 /*====================== PerspectiveCamera ========================*/
 const camera = new THREE.PerspectiveCamera(
-  55,
+  45,
   window.innerWidth / window.innerHeight,
   0.1,
   10000
@@ -164,9 +273,9 @@ window.addEventListener('resize', () => {
 /*================= render loop - make it animated ================*/
 const renderLoop = () => {
   // rotate Meshes
-  // group.children.forEach((child) => {
-  //   child.rotation.y += 0.003;
-  // });
+  group.children.forEach((child) => {
+    child.rotation.y += 0.001;
+  });
 
   controls.update();
   renderer.render(scene, camera);
