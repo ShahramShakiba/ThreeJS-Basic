@@ -50,25 +50,24 @@ scene.add(box, sphere, torusKnot, circle);
 scene.add(box2, sphere2, torusKnot2);
 
 // Initialize the light
-const directionLight = new THREE.DirectionalLight('white', 0.5);
-directionLight.position.x = 5;
-directionLight.position.z = 5;
-directionLight.position.y = 2;
+const pointLight = new THREE.PointLight('white', 0.5);
+pointLight.position.x = 0;
+pointLight.position.y = 0;
 
-const directionalLightHelper = new THREE.DirectionalLightHelper(
-  directionLight,
+const pointLightHelper = new THREE.PointLightHelper(
+  pointLight,
   0.5
 );
 
-scene.add(directionLight);
-scene.add(directionalLightHelper);
+scene.add(pointLight);
+scene.add(pointLightHelper);
 
-pane.addBinding(directionLight, 'color', {
+pane.addBinding(pointLight, 'color', {
   color: {
     type: 'float',
   },
 });
-pane.addBinding(directionLight, 'intensity', {
+pane.addBinding(pointLight, 'intensity', {
   min: 0,
   max: 1,
   step: 0.01,
@@ -1064,8 +1063,33 @@ pane.addBinding(directionLight, 'intensity', {
 });
 */
 
-/* =========================  =============================
+/* ========================= Point Light =============================
+? is a type of light source that emits light equally in all directions from a single point in space. 
+- This type of light simulates the effect of a "light bulb" or a "candle", where the light (radiates outwards in a spherical pattern). 
+- Point lights are commonly used to create realistic lighting effects in 3D scenes by illuminating objects and casting shadows.
 
+const pointLight = new THREE.PointLight('white', 0.5);
+pointLight.position.x = 0;
+pointLight.position.y = 3;
+
+const pointLightHelper = new THREE.PointLightHelper(
+  pointLight,
+  0.5
+);
+
+scene.add(pointLight);
+scene.add(pointLightHelper);
+
+pane.addBinding(pointLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(pointLight, 'intensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
 */
 
 /* =========================  =============================
