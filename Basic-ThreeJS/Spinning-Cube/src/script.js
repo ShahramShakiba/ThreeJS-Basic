@@ -49,25 +49,43 @@ circle.rotation.x = -Math.PI / 2;
 scene.add(box, sphere, torusKnot, circle);
 scene.add(box2, sphere2, torusKnot2);
 
-// Initialize the light
-const pointLight = new THREE.PointLight('white', 0.5);
-pointLight.position.x = 0;
-pointLight.position.y = 0;
+//===== Initialize the light
+const spotLight = new THREE.SpotLight(0x59ffe9, 0.8);
+spotLight.position.x = 0;
+spotLight.position.y = 2;
+spotLight.position.z = 2;
 
-const pointLightHelper = new THREE.PointLightHelper(
-  pointLight,
-  0.5
-);
+const spotLightHelper = new THREE.SpotLightHelper(spotLight, 0.8);
 
-scene.add(pointLight);
-scene.add(pointLightHelper);
+scene.add(spotLight);
+scene.add(spotLightHelper);
 
-pane.addBinding(pointLight, 'color', {
+pane.addBinding(spotLight, 'angle', {
+ min:0,
+ max: Math.PI / 2, // convert to deg
+ step:0.01
+});
+pane.addBinding(spotLight, 'penumbra', {
+ min:0, //sharp light 
+ max: 1, //soft light
+ step:0.01
+});
+pane.addBinding(spotLight, 'decay', {
+ min:0,
+ max: 5,
+ step:0.01
+});
+pane.addBinding(spotLight, 'distance', {
+ min:0,
+ max: 10,
+ step:0.01
+});
+pane.addBinding(spotLight, 'color', {
   color: {
     type: 'float',
   },
 });
-pane.addBinding(pointLight, 'intensity', {
+pane.addBinding(spotLight, 'intensity', {
   min: 0,
   max: 1,
   step: 0.01,
@@ -1090,6 +1108,68 @@ pane.addBinding(pointLight, 'intensity', {
   max: 1,
   step: 0.01,
 });
+*/
+
+/* ========================= Spot Light =============================
+-  is a type of light source that emits light in a specific direction, creating a focused beam of light that can be used to illuminate specific areas or objects in a 3D scene. 
+? This type of light source is commonly used to simulate the effect of a spotlight in real-world scenarios, such as "stage lighting" or "flashlight effects".
+
+const spotLight = new THREE.SpotLight(0x59ffe9, 0.8);
+spotLight.position.x = 1;
+spotLight.position.y = 2;
+spotLight.position.z = 2;
+
+const spotLightHelper = new THREE.SpotLightHelper(spotLight, 0.8);
+
+scene.add(spotLight);
+scene.add(spotLightHelper);
+
+pane.addBinding(spotLight, 'angle', {
+ min:0,
+ max: Math.PI / 2, // convert to deg
+ step:0.01
+});
+pane.addBinding(spotLight, 'penumbra', {
+ min:0, //sharp light 
+ max: 1, //soft light
+ step:0.01
+});
+pane.addBinding(spotLight, 'decay', {
+ min:0,
+ max: 5,
+ step:0.01
+});
+pane.addBinding(spotLight, 'distance', {
+ min:0,
+ max: 10,
+ step:0.01
+});
+pane.addBinding(spotLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(spotLight, 'intensity', {
+  min: 0,
+  max: 1,
+  step: 0.01,
+});
+*/
+
+/* =========================  =============================
+
+*/
+
+/* =========================  =============================
+
+*/
+
+/* =========================  =============================
+
+*/
+
+/* =========================  =============================
+
 */
 
 /* =========================  =============================
