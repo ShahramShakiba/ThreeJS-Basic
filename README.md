@@ -83,7 +83,7 @@ https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/37d52077-a8ef-4
 <br/>
 
 <!-------- try it live -------->
-#### _Give it a go in real-time and give me a Star_ &nbsp; <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Glowing%20Star.png" alt="Glowing Star" width="25"  /> <a href="https://redux-auth-counter-shahram.netlify.app/" target="_blank"> &nbsp; _Solar System_ </a> 
+#### _Give it a go in real-time and give me a Star_ &nbsp; <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Glowing%20Star.png" alt="Glowing Star" width="25"  /> <a href="https://solar-system-shahram.netlify.app/" target="_blank"> &nbsp; _Solar System_ </a> 
 
 
  
