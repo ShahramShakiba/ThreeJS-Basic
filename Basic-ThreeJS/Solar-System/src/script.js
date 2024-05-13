@@ -114,7 +114,7 @@ const planets = [
         name: 'Deimos',
         radius: 0.2,
         distance: 3,
-        speed: 0.005,
+        speed: 0.004,
         color: 0xffffff,
       },
     ],
@@ -123,7 +123,7 @@ const planets = [
     name: "Shahram'Planet",
     radius: 2.2,
     distance: 42,
-    speed: 0.005,
+    speed: 0.004,
     material: mercuryMaterial,
     moons: [],
   },
@@ -218,7 +218,7 @@ window.addEventListener('resize', () => {
 /*==================== Render Loop  ==========================*/
 const renderLoop = () => {
   sun.rotation.y += 0.001;
-  
+
   planetMeshes.forEach((planet, planetIndex) => {
     planet.rotation.y += planets[planetIndex].speed;
 
