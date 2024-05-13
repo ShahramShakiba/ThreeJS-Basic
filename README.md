@@ -28,10 +28,6 @@
  > ⒉ _Solar System_ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _Implementing Three.js Fundamentals_ } <br/>
  
  > ⒊ _....._ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _....._ }  <br/>
- 
- > ⒋ _......_ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _....._ } <br/>
- 
- > ⒌ _....._ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _....._ }  <br/>
 
 <br/><br/>
 
@@ -58,7 +54,7 @@
 #### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Ambient Light_ | _Hemisphere Light_ | _Directional Light_ | _pointLight_ | _spotLight_ | _Rect Area Light_ 
 #### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Shadow Properties_ | _Shadow Map Types_ 
 
-<br/><br/>
+<br/>
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b"  alt="Three.js Fundamentals" align='center'/> &nbsp;<br/>
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/b9ee203c-af4e-429c-8544-c1ad1bb07478" height="285px" width="55%" alt="Three.js Metarial"/> &nbsp;
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/f29eaa50-3a5c-4755-905b-b65d54cac0b5" height="285px" width="42%" alt="Perspective Camera"/> <br/>
@@ -67,7 +63,16 @@
 
 <br/>
 
+<!--------- Video --------->
+<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Clapper%20Board.webp" alt="Clapper Board" width="35" />
+
+https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/37d52077-a8ef-4e80-a36f-6ba18bce8c0a
+
+<br/>
+
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+
+<br/>
 
 <!--===================== Solar System =============================-->
 ### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Laptop.webp" alt="Laptop" width="35" height="30"  /> &nbsp; _Solar System_  &nbsp; <img src="https://skillicons.dev/icons?i=threejs" height="30" alt="nextjs logo"  />
