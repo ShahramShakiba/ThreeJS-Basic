@@ -144,7 +144,7 @@ boulderPane.addBinding(boulderMaterial, 'displacementScale', {
 });
 boulderPane.addBinding(boulderMaterial, 'aoMapIntensity', {
   min: 0,
-  max: 1,
+  max: 10,
   step: 0.01,
 });
 

@@ -15,6 +15,13 @@ const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 const sunTexture = textureLoader.load('/textures/2k_sun.jpg');
 const sunMaterial = new THREE.MeshBasicMaterial({
   map: sunTexture,
+  aoMap: sunTexture,
+});
+
+pane.addBinding(sunMaterial, 'aoMapIntensity', {
+  min: 0,
+  max: 2,
+  step: 0.01,
 });
 
 const mercuryTexture = textureLoader.load('/textures/2k_mercury.jpg');
@@ -54,46 +61,46 @@ scene.background = backgroundCubeMap;
 
 /*======= Initialize the Sun Mesh =======*/
 const sun = new THREE.Mesh(sphereGeometry, sunMaterial);
-sun.scale.setScalar(6);
+sun.scale.setScalar(8);
 scene.add(sun);
 
 /*=================== Planets Array ===================== */
 const planets = [
   {
     name: 'Mercury',
-    radius: 0.5,
-    distance: 10,
-    speed: 0.01,
+    radius: 0.9,
+    distance: 14,
+    speed: 0.005,
     material: mercuryMaterial,
     moons: [],
   },
   {
     name: 'Venus',
-    radius: 0.8,
-    distance: 15,
-    speed: 0.007,
+    radius: 1.2,
+    distance: 19,
+    speed: 0.004,
     material: venusMaterial,
     moons: [],
   },
   {
     name: 'Earth',
-    radius: 1,
-    distance: 20,
-    speed: 0.005,
+    radius: 1.4,
+    distance: 25,
+    speed: 0.002,
     material: earthMaterial,
     moons: [
       {
         name: 'Moon',
         radius: 0.3,
         distance: 3,
-        speed: 0.015,
+        speed: 0.005,
       },
     ],
   },
   {
     name: 'Mars',
-    radius: 0.7,
-    distance: 25,
+    radius: 1.1,
+    distance: 33,
     speed: 0.003,
     material: marsMaterial,
     moons: [
@@ -101,21 +108,21 @@ const planets = [
         name: 'Phobos',
         radius: 0.1,
         distance: 2,
-        speed: 0.02,
+        speed: 0.002,
       },
       {
         name: 'Deimos',
         radius: 0.2,
         distance: 3,
-        speed: 0.015,
+        speed: 0.005,
         color: 0xffffff,
       },
     ],
   },
   {
     name: "Shahram'Planet",
-    radius: 1.2,
-    distance: 35,
+    radius: 2.2,
+    distance: 42,
     speed: 0.005,
     material: mercuryMaterial,
     moons: [],
@@ -157,15 +164,26 @@ const planetMeshes = planets.map((planet) => {
 });
 
 /*==================== Initialize the Light ==================*/
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.15);
 scene.add(ambientLight);
 
-const pointLight = new THREE.PointLight(0xfffbc8, 200);
+const pointLight = new THREE.PointLight(0xfffbc8, 300);
 scene.add(pointLight);
+
+pane.addBinding(pointLight, 'color', {
+  color: {
+    type: 'float',
+  },
+});
+pane.addBinding(pointLight, 'intensity', {
+  min: 0,
+  max: 1000,
+  step: 5,
+});
 
 /*==================== Initialize the Camera ==================*/
 const camera = new THREE.PerspectiveCamera(
-  35,
+  55,
   window.innerWidth / window.innerHeight,
   0.1,
   400
@@ -199,6 +217,8 @@ window.addEventListener('resize', () => {
 
 /*==================== Render Loop  ==========================*/
 const renderLoop = () => {
+  sun.rotation.y += 0.001;
+  
   planetMeshes.forEach((planet, planetIndex) => {
     planet.rotation.y += planets[planetIndex].speed;
 
