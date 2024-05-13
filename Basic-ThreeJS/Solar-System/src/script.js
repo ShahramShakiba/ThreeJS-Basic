@@ -6,6 +6,8 @@ import { Pane } from 'tweakpane';
 const scene = new THREE.Scene();
 const pane = new Pane();
 const textureLoader = new THREE.TextureLoader();
+const cubeTextureLoader = new THREE.CubeTextureLoader();
+cubeTextureLoader.setPath('/textures/cubeMap/');
 
 /*============== Initialize the Geometry & Material ==============*/
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
@@ -39,6 +41,16 @@ const moonTexture = textureLoader.load('/textures/2k_moon.jpg');
 const moonMaterial = new THREE.MeshStandardMaterial({
   map: moonTexture,
 });
+
+const backgroundCubeMap = cubeTextureLoader.load([
+  'px.png',
+  'nx.png',
+  'py.png',
+  'ny.png',
+  'pz.png',
+  'nz.png',
+]);
+scene.background = backgroundCubeMap;
 
 /*======= Initialize the Sun Mesh =======*/
 const sun = new THREE.Mesh(sphereGeometry, sunMaterial);
@@ -100,6 +112,14 @@ const planets = [
       },
     ],
   },
+  {
+    name: "Shahram'Planet",
+    radius: 1.2,
+    distance: 35,
+    speed: 0.005,
+    material: mercuryMaterial,
+    moons: [],
+  },
 ];
 
 //=============== Creating Planet
@@ -137,8 +157,11 @@ const planetMeshes = planets.map((planet) => {
 });
 
 /*==================== Initialize the Light ==================*/
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xfffbc8, 200);
+scene.add(pointLight);
 
 /*==================== Initialize the Camera ==================*/
 const camera = new THREE.PerspectiveCamera(
@@ -210,4 +233,11 @@ renderLoop();
 ?rotate Moon around the Earth
     moon.position.x = Math.sin(elapsedTime) * 2;
     moon.position.z = Math.cos(elapsedTime) * 2;
+*/
+
+/*============= Cube Texture Loader ===============
+- CubeTextureLoader can be used to load cube maps. 
+- The loader returns an instance of CubeTexture and expects the cube map to be defined as "six separate images" representing the sides of a cube. 
+
+- Other cube map definitions like vertical and horizontal cross, column and row layouts are not supported.
 */
