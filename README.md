@@ -25,13 +25,9 @@
  ###  _Projects_ &nbsp; <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif" alt="🚀" width="28" >  
  > ⒈ _Spinning Cube_ = <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _Three.js Fundamentals_ } <br/>
  
- > ⒉ _....._ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _......_ } <br/>
+ > ⒉ _Solar System_ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _Implementing Three.js Fundamentals_ } <br/>
  
  > ⒊ _....._ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _....._ }  <br/>
- 
- > ⒋ _......_ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _....._ } <br/>
- 
- > ⒌ _....._ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _....._ }  <br/>
 
 <br/><br/>
 
@@ -48,6 +44,17 @@
 
 <br/><br/>
 
+> _Which Concepts in Have I Covered_: 
+#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Scene_ | _Camera_ | _Renderer_ | _FOV_ | _Near & Far_
+#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Orbit Controls_ | _Render Loop_ | _Orthographic Camera_ 
+#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Resizing_ | _Antialiasing_ | _Transforming Position_ | _Transforming Scale_ | _Scene Hierarchy_
+#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Rotation_ | _Animating Meshes_ | _Buffer Geometry_ | _Tweakpane_ 
+#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _MeshBasicMaterial_ | _Mesh Lambert & Mesh Phong Materials_ | _ Mesh Standard & Mesh Physical Materials_ 
+#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Repeating Texture_ | _Texture Offset_ | _UV Maps_ | _PBR Maps_ | _Normal Map_ | _Height Map_ | _AO Map_
+#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Ambient Light_ | _Hemisphere Light_ | _Directional Light_ | _pointLight_ | _spotLight_ | _Rect Area Light_ 
+#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Shadow Properties_ | _Shadow Map Types_ 
+
+<br/>
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b"  alt="Three.js Fundamentals" align='center'/> &nbsp;<br/>
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/b9ee203c-af4e-429c-8544-c1ad1bb07478" height="285px" width="55%" alt="Three.js Metarial"/> &nbsp;
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/f29eaa50-3a5c-4755-905b-b65d54cac0b5" height="285px" width="42%" alt="Perspective Camera"/> <br/>
@@ -56,31 +63,34 @@
 
 <br/>
 
+<!--------- Video --------->
+<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Clapper%20Board.webp" alt="Clapper Board" width="35" />
+
+https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/37d52077-a8ef-4e80-a36f-6ba18bce8c0a
+
+<br/>
+
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
-<!--===================== .... =============================-->
-### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Laptop.webp" alt="Laptop" width="35" height="30"  /> &nbsp; _...._  &nbsp; <img src="https://skillicons.dev/icons?i=threejs" height="30" alt="nextjs logo"  />
-> [!NOTE] 
-> _ThreeJS_ is <br/><br/>
+<br/>
 
- > #### For this project, my goal is on ....._. <br/>
- 
-> [!IMPORTANT]
-> _Which Concepts in Have I Covered_:  
-
-#### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _....._
-
+<!--===================== Solar System =============================-->
+### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Laptop.webp" alt="Laptop" width="35" height="30"  /> &nbsp; _Solar System_  &nbsp; <img src="https://skillicons.dev/icons?i=threejs" height="30" alt="nextjs logo"  />
+#### For this project, my primary objective is to conduct a comprehensive analysis of the fundamental characteristics of Three.js, highlighting how it simplifies the development of 3D applications and websites.
+- Through an in-depth investigation, I intend to spotlight the essential features and capabilities that position Three.js as a flexible and robust tool for developers, illustrated through the creation of a _` Solar System `_.
+ > #### By exploring its strengths and benefits, I aim to demonstrate how Three.js can improve user experience and enhance the visual aesthetics of digital endeavors. <br/><br/>
 
 <br/>
 
 <!-------- try it live -------->
-#### _Give it a go in real-time and give me a Star_ &nbsp; <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Glowing%20Star.png" alt="Glowing Star" width="25"  /> <a href="https://redux-auth-counter-shahram.netlify.app/" target="_blank"> &nbsp; _....._ </a> 
+#### _Give it a go in real-time and give me a Star_ &nbsp; <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Glowing%20Star.png" alt="Glowing Star" width="25"  /> <a href="https://redux-auth-counter-shahram.netlify.app/" target="_blank"> &nbsp; _Solar System_ </a> 
 
 
  
 <!--------- Video --------->
 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Clapper%20Board.webp" alt="Clapper Board" width="35" />
 
+https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/196d83d3-9e64-42ee-81a5-3b3798a94c81
 
   <br/> 
 
