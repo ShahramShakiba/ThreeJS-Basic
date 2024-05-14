@@ -55,7 +55,7 @@
 #### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="18"> &nbsp; _Shadow Properties_ | _Shadow Map Types_ 
 
 <br/>
- <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b"  alt="Three.js Fundamentals" align='center'/> &nbsp;<br/>
+ <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/39ad34fc-b318-4d5f-9c2d-ccfbf8172f7b.webp"  alt="Three.js Fundamentals" align='center'/> &nbsp;<br/>
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/b9ee203c-af4e-429c-8544-c1ad1bb07478" height="285px" width="55%" alt="Three.js Metarial"/> &nbsp;
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/f29eaa50-3a5c-4755-905b-b65d54cac0b5" height="285px" width="42%" alt="Perspective Camera"/> <br/>
  <img src="https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/a0b757bc-6ad3-4eb2-86e6-ea9a9705c908" height="274px" width="48%" alt="Three.js Lights"/> &nbsp;
