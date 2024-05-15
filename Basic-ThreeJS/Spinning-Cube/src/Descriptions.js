@@ -327,10 +327,13 @@ renderLoop();
 * is a built-in object that helps visualize the orientation of the coordinate system.
 
 const axesHelper = new THREE.AxesHelper(2);
-cubeMesh.add(axesHelper);
+scene.add(axesHelper);
 
 - When you create a new `AxesHelper` instance with a size parameter (in this case, 2), it generates three lines representing the X, Y, and Z axes in the specified size.
 
+green: Y axes
+red: X axes
+blue: Z axes
 */
 
 /* %%%%%%%%%%%% position & Vector3 & distanceTo & scale %%%%%%%%%%%%% 
@@ -342,7 +345,7 @@ cubeMesh.add(axesHelper);
   - representing the object's local position
   -  It is commonly used to define "positions", "directions", and "velocities"(the speed of something in a given direction) of objects in the 3D environment.
 
-  - a way to manipulate Vector3 properties, like position and properties inside of them as well like copy
+  - a way to manipulate Vector3 properties, like position and properties inside of them as well like copy-> a way to manipulate other meshes
 
   const tempVector = new THREE.Vector3(0, 1, 0);
   cubeMesh.position.copy(tempVector);
@@ -354,7 +357,7 @@ cubeMesh.add(axesHelper);
   - is determining the distance between the position of a "cube mesh" and the position of the "camera" in the 3D space.
 
 - calculate the "distance" between the block we see and the camera
-    console.log(cubeMesh.position.distanceTo(camera.position));
+    console.log(cubeMesh.position.distanceTo(camera.position)); // 5
 
 * scale:
   - The object's local scale. Default is Vector3( 1, 1, 1 )
@@ -374,19 +377,18 @@ const cubeMesh3 = new THREE.Mesh(cubeGeometry, cubeMaterial);
 cubeMesh3.position.x = -2;
 
 const group = new THREE.Group();
-group.add(cubeMesh);
-group.add(cubeMesh2);
-group.add(cubeMesh3);
+group.add(cubeMesh, cubeMesh2, cubeMesh3 );
 
 group.position.y = 2;
-group.scale.setScalar(2); //x,y,z = 2
+group.scale.setScalar(2); // x,y,z = 2
 
 scene.add(group);
 */
 
-/* ======================== Rotation ========================= 
-?- rotation : Euler
+/* %%%%%%%%%%%%%%%%%%%%%%%% Rotation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* rotation : Euler
   Object's local rotation (see Euler angles), in radians.
+  Euler is a way to describe the rotation to an object depending on its various axises
 
 - Euler angles describe a rotational transformation by rotating an object on its various axes in specified amounts per axis, and a specified axis order.
 
@@ -397,46 +399,51 @@ scene.add(group);
   cubeMesh.rotation.y = THREE.MathUtils.degToRad(90);
   cubeMesh.rotation.x = THREE.MathUtils.degToRad(45);
 
-?- Quaternion:
+  ? THREE.MathUtils.degToRad(90): convert degree to radians
+
+* Quaternion:
 - Quaternions are used in three.js to represent "rotations".
 
 - Iterating through a Quaternion instance will yield its components (x, y, z, w) in the corresponding order.
 */
 
-/* ====================== Make it Animated ======================== 
-?
-//keep track of time | Clock()
+/* %%%%%%%%%%%%%%%%%%%%%%% Make it Animated %%%%%%%%%%%%%%%%%%%%%%%%%%%
+* keep track of time | Clock
 const clock = new THREE.Clock();
 let previousTime = 0;
 
 const renderLoop = () => {
   const currentTime = clock.getElapsedTime();
+  * getElapsedTime: the difference between when this method called and when we first initialize the clock
+
   const delta = currentTime - previousTime;
   previousTime = currentTime;
- ? //subsequent iteration of the renderLoop can accurately calculate the elapsed time since the last frame. This allows for "smooth animation"
+ ? subsequent iteration of the renderLoop can accurately calculate the elapsed time since the last frame. This allows for "smooth animation"
 
   cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 25;
 
- ? //generates a "wave-like pattern" that swing back and forth between -1 and 1 as its input varies
+ ? generates a "wave-like pattern" that swing back and forth between -1 and 1 as its input varies
   cubeMesh.scale.x = Math.sin(currentTime) * 7 + 2;
   cubeMesh.position.x = Math.sin(currentTime) + 2;
 
   controls.update();
   renderer.render(scene, camera);
   window.requestAnimationFrame(renderLoop);
- ? //wait until you're able to produce this frame and then call myself again
 };
-
 renderLoop();
 */
 
-/* ================ Custom Geometry | BufferGeometry =============== 
-- A representation of mesh, line, or point geometry. 
+/* %%%%%%%%%%%%%%%% Custom-Geometry | BufferGeometry =%%%%%%%%%%%%%%%%%%% 
+* BufferGeometry: A representation of mesh, line, or point geometry. 
+- stores the information about the vertices
 - Includes vertex positions, face indices, normals, colors, UVs, and custom attributes within buffers, reducing the cost of passing all this data to the GPU.
 
-
 * Create a Custom Geometry
-? const vertices = new Float32Array([0, 0, 0, 0, 2, 0, 2, 0, 0]);
+? const vertices = new Float32Array([
+  0, 0, 0, 
+  0, 2, 0, 
+  2, 0, 0
+]);
     an array of vertices is defined to specify the coordinates of the points in 3D space. Each group of three values represents the x, y, and z coordinates of a vertex.
 
     a Float32Array is being used to store the vertex data for defining the geometry of the object. 
@@ -461,7 +468,7 @@ const cubeMesh = new THREE.Mesh(geometry, cubeMaterial);
 scene.add(cubeMesh);
 */
 
-/* ===================== Tweakpane library ===================
+/* %%%%%%%%%%%%%%%%%%%%%% Tweakpane library %%%%%%%%%%%%%%%%%%%%%%%%%%%
 # npm install --save tweakpane
 
 * Tweakpane library is a lightweight graphical user interface (GUI) library designed for developers working with creative coding frameworks like three.js.
