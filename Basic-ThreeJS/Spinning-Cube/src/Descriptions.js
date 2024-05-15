@@ -468,15 +468,37 @@ const cubeMesh = new THREE.Mesh(geometry, cubeMaterial);
 scene.add(cubeMesh);
 */
 
-/* %%%%%%%%%%%%%%%%%%%%%% Tweakpane library %%%%%%%%%%%%%%%%%%%%%%%%%%%
+/*%%%%%%%%%%%%%%%%%%%%% All kind of Geometry %%%%%%%%%%%%%%%%%%%%%%%%%
+- BoxGeometry( 1, 1, 1 )(width, height, depth)
+
+- CapsuleGeometry( 1, 1, 4, 8 )(radius, length, capSegments, radialSegments)
+
+- CircleGeometry( 5, 32 )(radius, segment)
+
+- ConeGeometry( 5, 20, 32 )(radius, height, radialSegment)
+
+- CylinderGeometry( 5, 5, 20, 32 )(radiusTop, radiusBottom, height, radialSegments)
+
+- DodecahedronGeometry(10, 0)(radius, detail)
+
+- SphereGeometry( 15, 32, 16 )(radius, widthSegments, heightSegments)
+
+- and so on...
+*/
+
+/* %%%%%%%%%%%%%%%%%%%%%% Tweakpane library %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # npm install --save tweakpane
 
-* Tweakpane library is a lightweight graphical user interface (GUI) library designed for developers working with creative coding frameworks like three.js.
+# import { Pane } from 'tweakpane';
+# const pane = new Pane();
 
-* It offers a user-friendly way to manipulate variables and parameters in real-time, enabling easy customization and experimentation with visual elements in your projects. 
+* Tweakpane library is a lightweight Graphical User Interface (GUI) library designed for developers working with creative coding frameworks like three.js.
+
+* It offers a user-friendly way to "manipulate variables" and parameters in real-time, enabling easy customization and experimentation with visual elements in your projects. 
 
 
 ? working on actual "Mesh" itself :
+!important: addInput or addBinding
 pane.addBinding(cubeMesh.scale, 'x', {
   min: 0,
   max: 10,
@@ -498,7 +520,8 @@ pane.addBinding(cubeMesh.scale, 'z', {
 
 
 ? working on "Geometry" itself :
-- "Geometry" & "Material" makes up the Mesh and coz of that the Mesh has different arguments, you CAN NOT scale the Geometry like the Mesh
+- "Geometry" & "Material" makes up the Mesh and coz of that the Mesh has different argument 
+! you CAN NOT scale the "Geometry" like the Mesh
     - instead we have "parameters object"
 
     - something like Geometry it takes a certain set ups arguments in the "constructor" but after it's created you can't change it after the fact
@@ -507,14 +530,11 @@ pane.addBinding(cubeMesh.scale, 'z', {
 
 
 let geometry = new THREE.PlaneGeometry(1, 1);
-
 const cubeMaterial = new THREE.MeshBasicMaterial({
   color: '#e0b90b',
   wireframe: true,
 });
 const cubeMesh = new THREE.Mesh(geometry, cubeMaterial);
-
-? making it visible in the 3D environment.
 scene.add(cubeMesh);
 
 const planeParameters = {
@@ -559,7 +579,7 @@ planeFolder
   });
 */
 
-/* ============ Manipulate Material | MeshBasicMaterial ===============
+/* %%%%%%%%%%%%%%%%%%%%%%% MeshBasicMaterial %%%%%%%%%%%%%%%%%%%%%%%%%%%
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
 
