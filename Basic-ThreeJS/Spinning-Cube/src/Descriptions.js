@@ -195,9 +195,9 @@ renderLoop();
 /* %%%%%%%%%%%%%%%%%%%%% Orthographic Camera %%%%%%%%%%%%%%%%%%%%%%%
 * Orthographic cameras are defined by a rectangular frustum 
 
-- is a type of camera that is used to create a parallel projection, as opposed to a perspective projection. 
+- is a type of camera that is used to create a "parallel projection", as opposed to a perspective projection. 
 
-- This means that objects in the scene will appear the same size regardless of their distance from the camera, which can be useful for certain types of applications such as "architectural visualization" or "2D games".
+- This means that objects in the scene will appear "the same size" regardless of their distance from the camera, which can be useful for certain types of applications such as "architectural-visualization" or "2D games".
 
 ? OrthographicCamera(left, right, top, bottom, near, far)
 - denoting the distance between the center of the camera and actual edges of this box(FOV)
@@ -212,43 +212,133 @@ renderLoop();
    200
  );
 
-? why we multiplied left and right to aspectRatio?  
-?       -1 * aspectRatio,  <- left
-?        1 * aspectRatio,  <- right
+? why we multiplied "left&right" to "aspectRatio"?  
+    -1 * aspectRatio,  <- left
+     1 * aspectRatio,  <- right
 -> adjusting the horizontal viewing range of the camera to match the aspect ratio of the window so objects rendered on screen are not distorted or stretched inappropriately.
 */
 
-/* ============ updateProjectionMatrix & update ==================
-- is used to recalculate the camera's projection matrix after any changes to the camera's parameters, such as aspect ratio or field of view. 
+/* %%%%%%%%%%%%%%%%%%%%%%% Controls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+* FlyControls:
+FlyControls enables a navigation similar to fly modes in DCC tools like Blender. 
+You can arbitrarily transform the camera in 3D space without any limitations (e.g. focus on a specific target).
+
+* PointerLockControls:
+The implementation of this class is based on the Pointer Lock API. PointerLockControls is a perfect choice for "first person 3D games".
+
+* TrackballControls:
+TrackballControls is similar to OrbitControls. However, it does not maintain a constant camera up vector. 
+That means if the camera orbits over the “north” and “south” poles, it does not flip to stay "right side up".
+
+* DragControls:
+This class can be used to provide a "drag'n'drop" interaction.
+*/
+
+/* %%%%%%%%% update Projection Matrix & resize listener %%%%%%%%%%%%%%%
+* is used to recalculate the camera's projection matrix after any changes to the camera's parameters, such as aspect ratio or field of view. 
+
 - This ensures that the camera's view frustum and perspective are updated correctly to reflect the changes in the scene.
 
-?
+window.addEventListener('resize', () => {
+? camera.aspect = window.innerWidth / window.innerHeight;
+? camera.updateProjectionMatrix();
+? renderer.setSize(window.innerWidth, window.innerHeight);
+});
 */
 
-/* ================== antialias & maxPixelRatio =======================
-?- antialias:
-  is a technique used to "smooth out" jagged edges in computer graphics, resulting in a more visually appealing and realistic rendering of objects.
+/* %%%%%%%%%%%%%%%%%%%%% antialias & maxPixelRatio %%%%%%%%%%%%%%%%%%%%%
+# To fix staircase pattern of rendering 3D-graphics:
+* Hardware typo solution
+  - more hardware pixels per software pixels on the screen
+  - the actual amount of pixels U get on the screen
+  - provide higher pixel ratio - render more pixels
 
-?- maxPixelRatio:
+? devicePixelRatio:
   helps in achieving higher resolution rendering on devices with high pixel density displays. 
   The `maxPixelRatio` variable is calculated as the minimum value between the device's pixel ratio and 2, ensuring optimal rendering performance.
+
+const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
+renderer.setPixelRatio(maxPixelRatio);
+
+
+{Retina screen} is a type of display technology developed by Apple that aims to produce visuals with such high pixel density that the human eye is unable to discern individual pixels at a typical viewing distance. This results in images and text appearing incredibly sharp, vibrant, and true to life.
+
+--------------------------------------------
+* Software typo solution
+  - it's like you shade the color with a slightly lighter-color 
+
+? antialias:
+  is a technique used to "smooth-out" jagged edges in computer graphics, resulting in a more visually appealing and realistic rendering of objects.
+
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+? antialias: true,
+});
 */
 
-/* ========================= axesHelper ============================
-?-  is a built-in object that helps visualize the orientation of the coordinate system.
+/*######################## Put All Together ###########################
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-- When you create a new `AxesHelper` instance with a size parameter (in this case, 2), it generates three lines representing the X, Y, and Z axes in the specified size.
+const scene = new THREE.Scene();
+
+const cubGeometry = new THREE.BoxGeometry(1, 1, 1);
+const cubMaterial = new THREE.MeshBasicMaterial({ color: 'yellow' });
+const cubMesh = new THREE.Mesh(cubGeometry, cubMaterial);
+
+scene.add(cubMesh);
+
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  1,
+  30
+);
+camera.position.z = 5;
+
+const canvas = document.querySelector('canvas.threejs');
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+  antialias: true,
+});
+renderer.setSize(window.innerWidth, window.innerHeight);
+const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
+renderer.setPixelRatio(maxPixelRatio);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.autoRotate = true;
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+const renderLoop = () => {
+  controls.update();
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(renderLoop);
+};
+renderLoop();
+*/
+
+/* %%%%%%%%%%%%%%%%%%%%%% axesHelper %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* is a built-in object that helps visualize the orientation of the coordinate system.
 
 const axesHelper = new THREE.AxesHelper(2);
 cubeMesh.add(axesHelper);
+
+- When you create a new `AxesHelper` instance with a size parameter (in this case, 2), it generates three lines representing the X, Y, and Z axes in the specified size.
+
 */
 
-/* =========== position & Vector3 & distanceTo & scale ================== 
-?- position:
+/* %%%%%%%%%%%% position & Vector3 & distanceTo & scale %%%%%%%%%%%%% 
+* position:
   - is a property of the Mesh
   - that position itself is a Vector3
 
-?- Vector3:
+* Vector3:
   - representing the object's local position
   -  It is commonly used to define "positions", "directions", and "velocities"(the speed of something in a given direction) of objects in the 3D environment.
 
@@ -259,20 +349,20 @@ cubeMesh.add(axesHelper);
   cubeMesh.position.x = 1;
   cubeMesh.position.z = 0;
 
-?- distanceTo:
+* distanceTo:
   - is a method available on `Vector3` instances that calculates the Euclidean(هندسی) distance between two points represented by vectors.
   - is determining the distance between the position of a "cube mesh" and the position of the "camera" in the 3D space.
 
 - calculate the "distance" between the block we see and the camera
     console.log(cubeMesh.position.distanceTo(camera.position));
 
-? - scale:
+* scale:
   - The object's local scale. Default is Vector3( 1, 1, 1 )
  
                      x, y, z
   cubeMesh.scale.set(2, 2, 1);
 
-? Scene Hierarchy | Parent child relationship
+* Scene Hierarchy | Parent child relationship
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 cubeMesh.position.y = -1;
 cubeMesh.scale.setScalar(0.5); //since group is=2 it'll be set as 1
