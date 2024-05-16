@@ -580,28 +580,37 @@ planeFolder
 */
 
 /* %%%%%%%%%%%%%%%%%%%%%%% MeshBasicMaterial %%%%%%%%%%%%%%%%%%%%%%%%%%%
+* A material for drawing geometries in a simple shaded (flat or wireframe) way.
+  - This material is not affected by lights.
+
+  * -----Geometry-----
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
 
+  * -----Material-----
 const material = new THREE.MeshBasicMaterial({
-? color: '#e0b90b',
-? transparent: true,  //one-way
-? opacity: 0.5,
+   color: '#e0b90b',
+   transparent: true,  //one-way
+   opacity: 0.5,
+   side : THREE.DoubleSide;
 });
 
-? //another-way 
+! another-way 
 material.color = new THREE.Color('#e0b90b');
 material.transparent = true;
 material.opacity = 0.5;
 
-? three.js by default has one-side materials, we can fix it by:
+? three.js by default has "one-side materials", we can fix it by:
 material.side = THREE.DoubleSide; //or just material.side = 2
 
-?                         color   near far
-const fog = new THREE.Fog(0xffffff, 1, 10);
+
+? create a "foggy" environment - U can add transparent & opacity to the Material for better experience or not
+                          color   near far
+const fog = new THREE.Fog(0xffffff, 0.5, 7);
 scene.fog = fog;
 scene.background = new THREE.Color(0xffffff);
 
+  * -----Mesh-----
 const mesh = new THREE.Mesh(geometry, material);
 const mesh2 = new THREE.Mesh(geometry, material);
 mesh2.position.x = 1.4;
@@ -609,17 +618,27 @@ mesh2.position.x = 1.4;
 const plane = new THREE.Mesh(planeGeometry, material);
 plane.position.x = -1.4;
 
-
+  * -----Add to the Scene----
 scene.add(mesh);
 scene.add(mesh2);
 scene.add(plane);
 */
 
-/* ============ Manipulate Material | MeshPhongMaterial ===============
+/* %%%%%%%%%%%%%% MeshPhongMaterial & MeshLambertMaterial %%%%%%%%%%%%%%
+* MeshLambertMaterial: A material for non-shiny surfaces, without specular highlights.
+
+* MeshPhongMaterial: A material for shiny surfaces with specular highlights.
+
+* They need information about "Light"
+
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
 const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
 
+? ---MeshLambertMaterial---
+const material = new THREE.MeshLambertMaterial();
+
+? ---MeshPhongMaterial---
 const material = new THREE.MeshPhongMaterial();
 material.shininess = 50;
 
@@ -636,6 +655,7 @@ scene.add(mesh);
 scene.add(mesh2);
 scene.add(plane);
 
+?light all part of the scene equally - doesn't exist in real life
 const light = new THREE.AmbientLight(0xffffff, 0.01);
 scene.add(light);
 
@@ -644,7 +664,7 @@ pointLight.position.set(5, 5, 5);
 scene.add(pointLight);
 */
 
-/* ============ Manipulate Material | MeshStandardMaterial ===============
+/* ============ MeshStandardMaterial ===============
 - A standard physically based material, using Metallic-Roughness workflow.
 
 ?- "Physically Based Rendering" (PBR) has recently become the standard in many 3D applications, such as Unity, Unreal and 3D Studio Max.
@@ -668,7 +688,7 @@ pane.addBinding(material, 'roughness', {
 });
 */
 
-/* ============ Manipulate Material | MeshPhysicalMaterial ===============
+/* ============ MeshPhysicalMaterial ===============
 - providing more advanced physically-based rendering properties:
 
 ? Anisotropy: ناهمسانگردی
