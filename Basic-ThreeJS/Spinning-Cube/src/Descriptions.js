@@ -823,22 +823,33 @@ scene.add(group);
 
 
 !------------------------------ Manipulate Textures
+* for example, create a large grassy field
+
+const planeGeometry = new THREE.PlaneGeometry(1, 1);
+
+? grassTexture
 const grassTexture = textureLoader.load(
+  '/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
+);
+grassTexture.repeat.set(10, 10);
+
+? spaceCruiserTexture
+const spaceCruiserTexture = textureLoader.load(
   'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
-);                      H  V
-grassTexture.repeat.set(2, 2);
+);                       x   y
+spaceCruiserTexture.repeat.set(2, 2);
 
 ?------------ RepeatWrapping
 grassTexture.wrapS = THREE.RepeatWrapping;
 grassTexture.wrapT = THREE.RepeatWrapping;
 
 ?------------ MirroredRepeatWrapping
-grassTexture.wrapS = THREE.MirroredRepeatWrapping;
-grassTexture.wrapT = THREE.MirroredRepeatWrapping; 
+spaceCruiserTexture.wrapS = THREE.MirroredRepeatWrapping;
+spaceCruiserTexture.wrapT = THREE.MirroredRepeatWrapping; 
 
 const plane = new THREE.Mesh(planeGeometry, material);
 plane.position.x = -1.6;
-plane.rotation.x = -(Math.PI * 0.5); // rotate 90deg
+plane.rotation.x = -(Math.PI * 0.5); // rotate 90deg, so it's look like a field
 plane.scale.set(1000, 1000);
 
 * wrapS
@@ -846,9 +857,9 @@ plane.scale.set(1000, 1000);
 * wrapT
 - This defines how the texture is wrapped vertically(Y axes) and corresponds to V in UV mapping.
 
-? WrapS and wrapT are parameters that control how textures are repeated or clamped{attached} along the horizontal (S) and vertical (T) axes respectively.
+* WrapS and wrapT are parameters that control how textures are repeated or clamped{attached} along the horizontal (S) and vertical (T) axes respectively.
 
-?----- differences between "RepeatWrapping" and "MirroredRepeatWrapping"
+? differences between "RepeatWrapping" and "MirroredRepeatWrapping"
 The (RepeatWrapping) mode simply repeats the texture if it extends beyond the boundaries of the object, creating a tiled effect.
     - for better understanding, something like this, starting from 0 to 100 and when we start to repeating again go back to 0 back to 100.
 
@@ -857,18 +868,19 @@ On the other hand, (MirroredRepeatWrapping) also repeats the texture but mirrors
 
 
 
-?-------------------- offset
+!------------------------------- offset
 * The 'offset' property allows you to shift the starting position of the texture along the "x" and "y" axes within the specified range (min to max) and step increment. 
-* By adjusting the offset values, you can create effects such as scrolling textures or creating animated textures on objects in a Three.js scene.
 
-const grassTexture = textureLoader.load(
+ By adjusting the offset values, you can create effects such as scrolling textures or creating animated textures on objects in a Three.js scene.
+
+const spaceCruiserTexture = textureLoader.load(
   'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
 );
-grassTexture.repeat.set(3, 3);
-grassTexture.wrapS = THREE.RepeatWrapping;
-grassTexture.wrapT = THREE.RepeatWrapping;
+spaceCruiserTexture.repeat.set(3, 3);
+spaceCruiserTexture.wrapS = THREE.RepeatWrapping;
+spaceCruiserTexture.wrapT = THREE.RepeatWrapping;
 
-pane.addBinding(grassTexture, 'offset', {
+pane.addBinding(spaceCruiserTexture, 'offset', {
   x: {
     min: -1,
     max: 1,
@@ -882,7 +894,7 @@ pane.addBinding(grassTexture, 'offset', {
 });
  
 
-?---------------------------------------- UV Map 
+!--------------------------------- UV Map 
 * In three.js, UV mapping involves assigning coordinates (U and V) to vertices رأس های of a 3D model, which correspond to points on the texture image. 
 
 * This mapping allows for "precise placement of textures" onto the surfaces of the model, ensuring that the texture wraps around the object correctly and appears as intended.
@@ -896,7 +908,7 @@ pane.addBinding(grassTexture, 'offset', {
 ?--- roughnessMap 
 - is a texture that defines [how rough or smooth a surface appears].
 - In PBR, the roughness value determines how light scatters-spread or reflects off a material's surface.
-- A roughness map can be grayscale, where darker areas represent rougher surfaces and lighter areas represent smoother surfaces.
+- A roughness map can be grayscale, where "darker areas represent rougher" surfaces and "lighter areas represent smoother surfaces".
 
       const grassRoughness = textureLoader.load(
         '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_roughness.png'
