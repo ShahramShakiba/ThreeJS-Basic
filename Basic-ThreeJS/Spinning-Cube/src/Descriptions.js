@@ -664,12 +664,12 @@ pointLight.position.set(5, 5, 5);
 scene.add(pointLight);
 */
 
-/* ============ MeshStandardMaterial ===============
-- A standard physically based material, using Metallic-Roughness workflow.
+/* %%%%%%%%%%%%%%%%%%%%%% MeshStandardMaterial %%%%%%%%%%%%%%%%%%%%%%
+* A standard physically based material, using Metallic-Roughness workflow.
 
 ?- "Physically Based Rendering" (PBR) has recently become the standard in many 3D applications, such as Unity, Unreal and 3D Studio Max.
 
-- In practice this gives a more accurate and realistic looking result than the "MeshLambertMaterial(A material for non-shiny surfaces, without specular highlights)" or "MeshPhongMaterial", at the cost of being somewhat more computationally expensive.
+- The idea is that, instead of tweaking materials to look good under specific lighting, a material can be created that will react 'correctly' under all lighting scenarios.
 
 ?- Note that for best results you should always specify an "environment map" when using this material.
 
@@ -681,15 +681,20 @@ pane.addBinding(material, 'metalness', {
   max: 1,
   step: 0.1,
 });
+* metalness: 
+  - How much the material is like a metal. Non-metallic materials such as wood or stone 
+
 pane.addBinding(material, 'roughness', {
   min: 0,
   max: 1,
   step: 0.1,
 });
+* roughness:
+  - How rough the material appears. 0.0 means a smooth mirror reflection
 */
 
-/* ============ MeshPhysicalMaterial ===============
-- providing more advanced physically-based rendering properties:
+/* %%%%%%%%%%%%%%%%%%% MeshPhysicalMaterial %%%%%%%%%%%%%%%%%%%%%
+* providing more advanced physically-based rendering properties:
 
 ? Anisotropy: ناهمسانگردی
     Ability to represent the anisotropic property of materials as observable with brushed metals.
@@ -703,7 +708,7 @@ pane.addBinding(material, 'roughness', {
     Can be used for representing cloth and fabric materials.
 
 
-? MeshPhysicalMaterial has a higher performance cost, per pixel, than other three.js materials.
+* MeshPhysicalMaterial has a higher performance cost, per pixel, than other three.js materials.
 
 
 const material = new THREE.MeshPhysicalMaterial();
@@ -731,7 +736,21 @@ pane.addBinding(material, 'clearcoat', {
 });
 */
 
-/* ======================= Rotate Meshes =========================
+/* %%%%%%%%%%%%%%%%%%%%%% Rotate Meshes %%%%%%%%%%%%%%%%%%%%%%%%%%
+const mesh = new THREE.Mesh(geometry, material);
+const torusKnot = new THREE.Mesh(torusKnotGeometry, material);
+torusKnot.position.x = 2;
+const plane = new THREE.Mesh(planeGeometry, material);
+plane.position.x = -2;
+const sphere = new THREE.Mesh(sphereGeometry, material);
+sphere.position.y = 2;
+const cylinder = new THREE.Mesh(cylinderGeometry, material);
+cylinder.position.y = -2;
+
+const group = new THREE.Group();
+group.add(mesh, torusKnot, plane, sphere, cylinder);
+scene.add(group);
+
 const renderLoop = () => {
   ? rotate All Meshes
   scene.children.forEach((child) => {
@@ -767,7 +786,7 @@ const renderLoop = () => {
 };
 */
 
-/* ============================ 3D Texture =============================
+/* %%%%%%%%%%%%%%%%%%%%%%% 3D Texture %%%%%%%%%%%%%%%%%%%%%%%%%%
 ?- https://freepbr.com/
   * Provides "PBR" materials and texture files.  
     My free PBR, or Physically-Based Rendering materials offer the "metalness" / "roughness" as well as the "metallic" / "smoothness" workflows.  
@@ -778,21 +797,37 @@ const renderLoop = () => {
 ? import texture and turn it into a texture that Three.js is able to recognize:
     const textureLoader = new THREE.TextureLoader();
 
-    const textureTest = textureLoader.load(
-      '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
-    );
-    ? save downloaded textures in your root-path to access it
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+const planeGeometry = new THREE.PlaneGeometry(1, 1);
+const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
 
-    const material = new THREE.MeshBasicMaterial();
-    material.map = textureTest;
-    material.color = new THREE.Color('red');
+const textureTest = textureLoader.load(
+  '/whispy-grass-meadow-bl/wispy-grass-meadow_albedo.png'
+);
+
+const material = new THREE.MeshBasicMaterial({
+  map: textureTest,
+});
+
+const cube = new THREE.Mesh(geometry, material);
+const knot = new THREE.Mesh(torusKnotGeometry, material);
+knot.position.x = 2;
+const plane = new THREE.Mesh(planeGeometry, material);
+plane.position.x = -2;
+const sphere = new THREE.Mesh(sphereGeometry, material);
+
+group.add(cube, knot, plane, sphere, cylinder);
+scene.add(group);
 
 
-*--------------------------------- Manipulate Textures
+!------------------------------ Manipulate Textures
 const grassTexture = textureLoader.load(
   'textures/space-cruiser-panels2-bl/space-cruiser-panels2_albedo.png'
 );                      H  V
 grassTexture.repeat.set(2, 2);
+
 ?------------ RepeatWrapping
 grassTexture.wrapS = THREE.RepeatWrapping;
 grassTexture.wrapT = THREE.RepeatWrapping;
@@ -806,10 +841,9 @@ plane.position.x = -1.6;
 plane.rotation.x = -(Math.PI * 0.5); // rotate 90deg
 plane.scale.set(1000, 1000);
 
-?------------- wrapS
+* wrapS
 - This defines how the texture is wrapped horizontally(X axes) and corresponds to U in UV mapping.
-
-?------------- wrapT
+* wrapT
 - This defines how the texture is wrapped vertically(Y axes) and corresponds to V in UV mapping.
 
 ? WrapS and wrapT are parameters that control how textures are repeated or clamped{attached} along the horizontal (S) and vertical (T) axes respectively.
