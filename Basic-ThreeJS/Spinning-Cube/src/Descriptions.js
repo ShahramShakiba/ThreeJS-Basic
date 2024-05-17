@@ -1520,32 +1520,51 @@ spotLightFolder.addBinding(spotLight, "intensity", {
 spotLightFolder.addBinding(spotLight, "color", { color: { type: "float" } });
 */
 
-/* ========================= Shadows =============================
-- Shadows help convey depth, spatial relationships, and realism in rendered scenes.
+/* %%%%%%%%%%%%%%%%%%%%%%%%% Shadows %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* Shadows help convey depth, spatial relationships, and realism in rendered scenes.
 
-- you need to set up a light source (such as directional light, point light, or spot light) 
-- and specify parameters like "shadow map resolution", "shadow bias", and "shadow camera settings".
+- you need to set up a light source (such as directional-light, point-light, or spot-light) 
+- and specify parameters like "shadow-map-resolution", "shadow-bias", and "shadow-camera-settings".
 
-?---------- CameraHelper 
+* -------------- Process of adding Shadows
+01. renderer.shadowMap.enabled = true;
+
+const canvas = document.querySelector('canvas.threejs');
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+  antialias: true,
+});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+? renderer.shadowMap.enabled = true;
+
+
+02. spotLight.castShadow = true;
+
+03. sphere.castShadow = true;
+
+04. plane.receiveShadow = true;
+
+* ---------- CameraHelper 
 - it creates a visual representation of the camera's viewing volume, often shown as wireframes or outlines in the scene. 
 - This can be particularly useful for debugging purposes, as it allows you to see exactly what the camera is capturing and how it is positioned within the scene.
 
 
 
-* _____________direction-light____________________
+! _____________direction-light____________________
 const directionalLight = new THREE.DirectionalLight(0xff0000, 0.6);
 directionalLight.position.set(3, 10, 15);
 scene.add(directionalLight);
-directionalLight.castShadow = true;
+? directionalLight.castShadow = true;
 
-directionalLight.shadow.mapSize.width = 1024;
-directionalLight.shadow.mapSize.height = 1024;
-directionalLight.shadow.radius = 5;
+? directionalLight.shadow.mapSize.width = 1024;
+? directionalLight.shadow.mapSize.height = 1024;
+? directionalLight.shadow.radius = 5;
 
-directionalLight.shadow.camera.left = -1;
-directionalLight.shadow.camera.right = 1;
-directionalLight.shadow.camera.top = 1;
-directionalLight.shadow.camera.bottom = -1;
+? directionalLight.shadow.camera.left = -1;
+? directionalLight.shadow.camera.right = 1;
+? directionalLight.shadow.camera.top = 1;
+? directionalLight.shadow.camera.bottom = -1;
 
 const directionLightCameraHelper = new THREE.CameraHelper(
   directionalLight.shadow.camera
@@ -1553,23 +1572,24 @@ const directionLightCameraHelper = new THREE.CameraHelper(
 scene.add(directionLightCameraHelper);
 directionLightCameraHelper.visible = false;
 
-// const directionalLightHelper = new THREE.DirectionalLightHelper(
-//   directionalLight
-// );
-// scene.add(directionalLightHelper);
+//  const directionalLightHelper = new THREE.DirectionalLightHelper(
+//    directionalLight
+//  );
+//  scene.add(directionalLightHelper);
 
-* _____________point-light______________
+
+! _____________point-light______________
 const pointLight = new THREE.PointLight(0x00ff00, 10);
 pointLight.position.set(-3, 2, -3);
 scene.add(pointLight);
-pointLight.castShadow = true;
+? pointLight.castShadow = true;
 
-pointLight.shadow.mapSize.width = 1024;
-pointLight.shadow.mapSize.height = 1024;
-pointLight.shadow.radius = 5;
+? pointLight.shadow.mapSize.width = 1024;
+? pointLight.shadow.mapSize.height = 1024;
+? pointLight.shadow.radius = 5;
 
-// pointLight.shadow.camera.near = 10;
-pointLight.shadow.camera.far = 30;
+? pointLight.shadow.camera.near = 10;
+? pointLight.shadow.camera.far = 30;
 
 
 const pointLightCameraHelper = new THREE.CameraHelper(
@@ -1577,45 +1597,56 @@ const pointLightCameraHelper = new THREE.CameraHelper(
 );
 scene.add(pointLightCameraHelper);
 
-// const pointLightHelper = new THREE.PointLightHelper(pointLight);
-// scene.add(pointLightHelper);
+//  const pointLightHelper = new THREE.PointLightHelper(pointLight);
+//  scene.add(pointLightHelper);
 
-* ______________spot-light_________________
+
+! ______________spot-light_________________
 const spotLight = new THREE.SpotLight(0x0000ff, 70, 80, Math.PI * 0.1);
 spotLight.position.set(8, 4, 4);
 spotLight.target.position.set(0, -1, 0);
 scene.add(spotLight);
-spotLight.castShadow = true;
-spotLight.shadow.mapSize.width = 1024; // default is 512
-spotLight.shadow.mapSize.height = 1024;
-// to fix pixelated effect of shadows, if you have less shadows use -> 1024
-// if you have a lot of shadows -> stick to shadow maps of a lower resolution
+? spotLight.castShadow = true;
+    to fix "pixelated-effect" of shadows, if you have less shadows use: 1024
+    if you have a lot of shadows: stick to shadow maps of a lower resolution
+? spotLight.shadow.mapSize.width = 1024;    // default is 512
+? spotLight.shadow.mapSize.height = 1024;
 
-spotLight.shadow.camera.near = 1;
-spotLight.shadow.camera.far = 50;
-spotLight.shadow.camera.fov = 30;
+? spotLight.shadow.radius = 5;  // "blur" the edges of the shadows
 
-//blur the edges of the shadows
-spotLight.shadow.radius = 5;
+? spotLight.shadow.camera.near = 1;
+? spotLight.shadow.camera.far = 50;
+? spotLight.shadow.camera.fov = 30;
+
+
+const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
+scene.add(spotLightCameraHelper);
 
 // const spotLightHelper = new THREE.SpotLightHelper(spotLight);
 // scene.add(spotLightHelper);
 
-// const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
-// scene.add(spotLightCameraHelper);
 
 
-
-* four main types of shadow maps:
-?1. BasicShadowMap: 
+! ------------------- four main types of shadow maps:
+* 1. BasicShadowMap: 
 - This is the simplest form of shadow mapping technique in THREE.js, providing basic shadow rendering without any advanced features.
 
-?2. PCFShadowMap:  (default)  ✔️ 
+? renderer.shadowMap.type = THREE.BasicShadowMap;
+
+
+* 2. PCFShadowMap:  (default)  ✔️✔️✔️ 
 - Percentage Closer Filtering (PCF) is a technique that helps to reduce aliasing and produce smoother shadows by averaging multiple samples around each pixel.
 
-?3. PCFSoftShadowMap:  ✔️ 
-- This variation of PCFShadowMap adds softness to the shadows by applying a blur filter, resulting in more realistic and softer shadow edges.
+? renderer.shadowMap.type = THREE.PCFShadowMap;
 
-?4. VSMShadowMap: 
+* 3. PCFSoftShadowMap:  ✔️✔️✔️ 
+- This variation of PCFShadowMap adds softness to the shadows by applying a blur filter, resulting in more realistic and softer shadow edges.
+- wil ignores the "radius" property of shadow
+
+? renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+* 4. VSMShadowMap: 
 - Variance Shadow Mapping (VSM) is a more advanced technique that aims to improve the quality of shadows by addressing issues like light bleeding and aliasing.
+
+? renderer.shadowMap.type = THREE.VSMShadowMap;
 */
