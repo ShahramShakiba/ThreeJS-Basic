@@ -910,59 +910,47 @@ pane.addBinding(spaceCruiserTexture, 'offset', {
 - In PBR, the roughness value determines how light scatters-spread or reflects off a material's surface.
 - A roughness map can be grayscale, where "darker areas represent rougher" surfaces and "lighter areas represent smoother surfaces".
 
-      const grassRoughness = textureLoader.load(
-        '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_roughness.png'
-      );
-      material.roughnessMap = grassRoughness;
-      material.roughness = 1; <- rough | 0.1 -> smooth
-
 ?--- metalnessMap
-- in PBR to define whether [a material is metallic-shiny or non-metallic].
+- in PBR to define whether [a material is metallic(shiny) or non-metallic].
 - In the metalness map, white areas indicate metallic properties, while black areas indicate non-metallic properties.
 - control how light interacts with metallic surfaces, influencing the material's appearance and reflectivity.
-
-      const grassMetallic = textureLoader.load(
-        '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_metallic.png'
-      );
-      material.metalnessMap = grassMetallic;
-      material.metalness = 1;
 
 ?--- normalMap
 - to create [more realistic lighting effects]. 
 - it simulates the small surface details of an object by adjusting how light interacts with its surface. This can _add depth and realism_ to objects in a 3D scene.
-
-      const grassNormal = textureLoader.load(
-         '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_normal-ogl.png'
-      );
-      material.normalMap = grassNormal;
+- what is normalMap holds is the information that tells Three.js how to fake the way that light bounces of the different materials
 
 ?--- heightMap - displacementMap
 -  a feature that allows [for the distortion or displacement of vertices] in a mesh based on a texture map.
 - This texture map is typically a grayscale image where (lighter areas correspond to higher displacements) and darker areas correspond to lower displacements.
 - When applied to a mesh, the displacement map alters the positions of the vertices along their normals, creating a visually interesting effect of height variation. This can be used to simulate effects like bumps, ripples, or other forms of surface deformation in 3D objects.
 
-      const grassHeight = textureLoader.load(
-        '/textures/whispy-grass-meadow-bl/wispy-grass-meadow_height.png'
-      );
-      material.displacementMap = grassHeight;
-      material.displacementScale = 0.2;
-
 ?--- aoMap
--  aoMap refers to Ambient{environment} Occlusion{blockage} Mapping, a technique [used to enhance the "realism" and "depth" of 3D scenes] by simulating how ambient light interacts with objects in a scene. 
+- aoMap refers to Ambient{environment} Occlusion{blockage} Mapping, a technique [used to enhance the "realism" and "depth" of 3D scenes] by simulating how ambient light interacts with objects in a scene. 
 - Ambient occlusion helps (create more realistic shadows and shading) by taking into account how objects block ambient light from reaching certain areas.
 
-* ********* The aoMap requires a second set of "UVs". **********
+
+! ********* The aoMap requires a second set of "UVs". 
 * The reason why aoMap needs a second set of UVs is that ambient occlusion calculations require a separate UV mapping for better accuracy. 
 *   - The primary UV coordinates are typically used { for texture mapping }, 
 *   - while the secondary set of UV coordinates is specifically {dedicated to
 *     ambient occlusion calculations}. 
-* By having a separate set of UVs, three.js can accurately calculate how ambient light interacts with the geometry in the scene.
+By having a separate set of UVs, three.js can accurately calculate how ambient light interacts with the geometry in the scene.
 
-      const geometry = new THREE.BoxGeometry(1, 1, 1);
-      ? BufferAttribute = stores data in a more optimized format     
-      ?                     item-size: 2 - since uv only has a Width & Height
-      const uv2Geometry = new THREE.BufferAttribute(geometry.attributes.uv.array, 2);
-      geometry.setAttribute('uv2', uv2Geometry);
+
+!&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Put All Together 
+
+? Scene
+const pane = new Pane();
+const scene = new THREE.Scene();
+const textureLoader = new THREE.TextureLoader();
+
+? Geometry
+const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+#BufferAttribute = stores data in a more optimized format     
+                            item-size: 2 - since uv only has a Width & Height
+const uv2Geometry = new THREE.BufferAttribute(geometry.attributes.uv.array, 2);
+geometry.setAttribute('uv2', uv2Geometry);
 
 ? Load the grass textures
 const grassAlbedo = textureLoader.load(
@@ -1024,13 +1012,13 @@ const spaceCruiserRoughness = textureLoader.load(
   '/textures/space-cruiser-panels2-bl/space-cruiser-panels2_roughness.png'
 );
 
-? grass material
+? grass pane folder
 const grassPane = pane.addFolder({
   title: 'Grass Material',
   expanded: true,
 });
 
-? Initialize the Material
+? grass Material
 const grassMaterial = new THREE.MeshStandardMaterial({
   map: grassAlbedo,
   roughnessMap: grassRoughness,
@@ -1099,7 +1087,7 @@ boulderPane.addBinding(boulderMaterial, 'aoMapIntensity', {
   step: 0.01,
 });
 
-? boulder material
+? space Cruiser material
 const spaceCruiserPane = pane.addFolder({
   title: 'Space Cruiser Material',
   expanded: true,
@@ -1149,9 +1137,17 @@ group.add(grass, boulder, spaceCruiser )
 
 ? Add the mesh to the scene
 scene.add(group);
+
+? light
+const light = new THREE.AmbientLight(0xffffff, 0.3);
+scene.add(light);
+
+const pointLight = new THREE.PointLight(0xffffff, 1.2);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
 */
 
-/* ========================= AmbientLight =============================
+/* %%%%%%%%%%%%%%%%%%%%%%%%%% AmbientLight %%%%%%%%%%%%%%%%%%%%%%%%%%%
 - simulating indirect light that fills in shadows and adds overall brightness to the scene. 
 ? It does not have a specific direction or position, and its intensity remains constant across all objects.
 
