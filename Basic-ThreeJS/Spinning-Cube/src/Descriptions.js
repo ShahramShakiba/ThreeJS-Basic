@@ -786,7 +786,7 @@ const renderLoop = () => {
 };
 */
 
-/* %%%%%%%%%%%%%%%%%%%%%%% 3D Texture %%%%%%%%%%%%%%%%%%%%%%%%%%
+/* %%%%%%%%%%%%%%%%%%%%%%%% 3D Texture %%%%%%%%%%%%%%%%%%%%%%%%%%%
 ?- https://freepbr.com/
   * Provides "PBR" materials and texture files.  
     My free PBR, or Physically-Based Rendering materials offer the "metalness" / "roughness" as well as the "metallic" / "smoothness" workflows.  
@@ -1148,15 +1148,15 @@ scene.add(pointLight);
 */
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%% AmbientLight %%%%%%%%%%%%%%%%%%%%%%%%%%%
-- simulating indirect light that fills in shadows and adds overall brightness to the scene. 
-? It does not have a specific direction or position, and its intensity remains constant across all objects.
+* simulating indirect light that fills in shadows and adds overall brightness to the scene. 
+
+- It does not have a specific direction or position, and its intensity remains constant across all objects.
 
 
 const ambientLight = new THREE.AmbientLight(
-  0xffffff, //or new THREE.Color('white')
-  0.4 //intensity
+  0xffffff,     // or new THREE.Color('white')
+  0.4           // intensity
 );
-
 scene.add(ambientLight);
 
 pane.addBinding(ambientLight, 'color', {
@@ -1171,8 +1171,9 @@ pane.addBinding(ambientLight, 'intensity', {
 });
 */
 
-/* ========================= HemisphereLight =============================
-- simulates ambient lighting in a scene. 
+/* %%%%%%%%%%%%%%%%%%%%%%%%% HemisphereLight %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* simulates ambient lighting in a scene. 
+
 ? It consists of two colors: one for the sky (top hemisphere) and one for the ground (bottom hemisphere). 
 - This light type is often used to create a soft, even lighting effect that mimics natural light conditions.
 
@@ -1186,20 +1187,21 @@ pane.addBinding(hemisphereLight, 'intensity', {
   max: 1,
   step: 0.01,
 });
-
 */
 
-/* ========================= Direction Light =============================
-- This type of light does not have a specific position in space but instead shines uniformly across the entire scene from a specified direction.
+/* %%%%%%%%%%%%%%%%%%%%%%%%%% Direction Light %%%%%%%%%%%%%%%%%%%%%%%%%%%
+* This type of light does not have a specific position in space but instead shines uniformly across the entire scene from a specified direction.
+
 - you can control various properties such as the color of the "light", "intensity", and the "direction" in which it shines. 
+
 ? This type of light is commonly used to simulate "sunlight" or "moonlight" in a scene, creating realistic lighting effects and shadows.
 
 const directionLight = new THREE.DirectionalLight('white', 0.5);
 directionLight.position.x = -5;
-directionLight.position.z = 5;
+directionLight.position.z = 5;      // one-way
 directionLight.position.y = 1;
 
-directionLight.target.position.set(0, 10, 0);
+directionLight.target.position.set(5, 5, 5);  // another-way
 
 const directionalLightHelper = new THREE.DirectionalLightHelper(
   directionLight,
@@ -1221,13 +1223,15 @@ pane.addBinding(directionLight, 'intensity', {
 });
 */
 
-/* ========================= Point Light =============================
-? is a type of light source that emits light equally in all directions from a single point in space. 
-- This type of light simulates the effect of a "light bulb" or a "candle", where the light (radiates outwards in a spherical pattern). 
-- Point lights are commonly used to create realistic lighting effects in 3D scenes by illuminating objects and casting shadows.
+/* %%%%%%%%%%%%%%%%%%%%%%%%%% Point Light %%%%%%%%%%%%%%%%%%%%%%%%%%
+* is a type of light source that emits light equally in all directions from a single point in space. 
 
-const pointLight = new THREE.PointLight('white', 0.5);
-pointLight.position.x = 0;
+- This type of light simulates the effect of a "light bulb" or a "candle", where the light (radiates outwards in a spherical pattern). 
+
+- Point lights are commonly used to create realistic lighting effects in 3D scenes by illuminating objects and casting shadows.
+                                                  distance
+const pointLight = new THREE.PointLight('white', 0.5, 5, 1);
+pointLight.position.x = 0;                              decay
 pointLight.position.y = 3;
 
 const pointLightHelper = new THREE.PointLightHelper(
@@ -1250,26 +1254,29 @@ pane.addBinding(pointLight, 'intensity', {
 });
 */
 
-/* ========================= Spot Light =============================
--  is a type of light source that emits light in a specific direction, creating a focused beam of light that can be used to illuminate specific areas or objects in a 3D scene. 
+/* %%%%%%%%%%%%%%%%%%%%%%%%%% Spot Light %%%%%%%%%%%%%%%%%%%%%%%%%%
+* is a type of light source that emits light in a specific direction, creating a focused beam of light that can be used to illuminate "specific areas" or "objects" in a 3D scene. 
+
 ? This type of light source is commonly used to simulate the effect of a spotlight in real-world scenarios, such as "stage lighting" or "flashlight effects".
 
 const spotLight = new THREE.SpotLight(0x59ffe9, 0.8);
 spotLight.position.x = 1;
-spotLight.position.y = 2;
+spotLight.position.y = 2;     //one-way
 spotLight.position.z = 2;
+
+spotLight.position.set(2, 2, 2);  //another-way
 
 const spotLightHelper = new THREE.SpotLightHelper(spotLight, 0.8);
 
 scene.add(spotLight);
 scene.add(spotLightHelper);
 
-pane.addBinding(spotLight, 'angle', {
+pane.addBinding(spotLight, 'angle', {  //how wide the light
  min:0,
- max: Math.PI / 2, // convert to deg
+ max: Math.PI / 2,    //convert to deg
  step:0.01
 });
-pane.addBinding(spotLight, 'penumbra', {
+pane.addBinding(spotLight, 'penumbra', {  //soft or sharp light
  min:0, //sharp light 
  max: 1, //soft light
  step:0.01
@@ -1296,8 +1303,9 @@ pane.addBinding(spotLight, 'intensity', {
 });
 */
 
-/* ========================= RectAreaLight =============================
-- is a type of light source that emits light uniformly from a rectangular area in a scene.
+/* %%%%%%%%%%%%%%%%%%%%%%%%%% RectAreaLight %%%%%%%%%%%%%%%%%%%%%%%%%%
+* is a type of light source that emits light uniformly from a rectangular area in a scene.
+
 - can be used to simulate lighting effects in a more realistic manner by providing soft, diffused lighting across a surface.
 
 ? Rect area lights are often used in architectural visualization, product rendering, and other scenarios where realistic lighting is crucial.
@@ -1307,8 +1315,8 @@ import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js
 const rectAreaLight = new THREE.RectAreaLight(
   0x0e0aff,
   4,
-  6, //width
-  4 //height
+  6,    //width
+  4     //height
 );
 rectAreaLight.position.x = 0;
 rectAreaLight.position.y = 1;
@@ -1332,7 +1340,8 @@ pane.addBinding(rectAreaLight, 'intensity', {
 });
 */
 
-/* ===================== Put All Light Together ====================
+/* 
+!&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Put All Light Together 
 const material = new THREE.MeshStandardMaterial({
   color: 0xffffff,
   metalness: 0.0,
@@ -1390,7 +1399,7 @@ circle.receiveShadow = true;
 scene.add(box, sphere, torusKnot, circle);
 scene.add(box2, sphere2, torusKnot2);
 
-* ================= Initialize the light ====================
+* ================= Initialize the light 
 ?_________ambientLight
 const ambientLight = new THREE.AmbientLight(new THREE.Color(0xc870ff), 0.2);
 scene.add(ambientLight);
@@ -1609,12 +1618,4 @@ spotLight.shadow.radius = 5;
 
 ?4. VSMShadowMap: 
 - Variance Shadow Mapping (VSM) is a more advanced technique that aims to improve the quality of shadows by addressing issues like light bleeding and aliasing.
-*/
-
-/* =========================  =============================
-
-*/
-
-/* =========================  =============================
-
 */
