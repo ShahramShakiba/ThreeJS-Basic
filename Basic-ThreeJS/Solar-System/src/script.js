@@ -245,17 +245,27 @@ const renderLoop = () => {
 };
 renderLoop();
 
-/* 
-? rotate Earth around the Sun
-    earth.position.x = Math.sin(elapsedTime) * 12;
-    earth.position.z = Math.cos(elapsedTime) * 12;
+/* %%%%%%%%%%%%%%% Rotation %%%%%%%%%%%%%%%%%%%%%%%
+const clock = new THREE.Clock();
 
-?rotate Moon around the Earth
-    moon.position.x = Math.sin(elapsedTime) * 2;
-    moon.position.z = Math.cos(elapsedTime) * 2;
+const renderLoop = () => {
+  const elapsedTime = clock.getElapsedTime();
+
+  * rotate Earth around the Sun
+  earth.position.x = Math.sin(elapsedTime) * 15;
+  earth.position.z = Math.cos(elapsedTime) * 15;
+  * rotate Moon around the Earth
+  moon.position.x = Math.sin(elapsedTime) * 2;
+  moon.position.z = Math.cos(elapsedTime) * 2;
+
+  controls.update();
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(renderLoop);
+};
+renderLoop();
 */
 
-/*============= Cube Texture Loader ===============
+/* %%%%%%%%%%%% Cube Texture Loader %%%%%%%%%%%%%%%%
 - CubeTextureLoader can be used to load cube maps. 
 - The loader returns an instance of CubeTexture and expects the cube map to be defined as "six separate images" representing the sides of a cube. 
 
