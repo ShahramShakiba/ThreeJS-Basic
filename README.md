@@ -27,7 +27,7 @@
  
  > ⒉ _Solar System_ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _Implementing Three.js Fundamentals_ } <br/>
  
- > ⒊ _....._ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _....._ }  <br/>
+ > ⒊ _3D Model_ =  <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🏷️{ _GLTF (Graphics Library Transmission Format)_ }  <br/>
 
 <br/><br/>
 
@@ -91,6 +91,28 @@ https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/37d52077-a8ef-4
 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Clapper%20Board.webp" alt="Clapper Board" width="35" />
 
 https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/196d83d3-9e64-42ee-81a5-3b3798a94c81
+
+  <br/> 
+
+***
+
+<!--===================== 3D Model =============================-->
+### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Laptop.webp" alt="Laptop" width="35" height="30"  /> &nbsp; _3D Model_  &nbsp; <img src="https://skillicons.dev/icons?i=threejs" height="30" alt="nextjs logo"  />
+#### For this project, my primary objective is to ....
+ > #### By exploring its strengths and benefits, I aim to demonstrate how ...... <br/><br/>
+
+<br/>
+
+<!-------- try it live -------->
+#### _Give it a go in real-time and give me a Star_ &nbsp; <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Glowing%20Star.png" alt="Glowing Star" width="25"  /> <a href="https://solar-system-shahram.netlify.app/" target="_blank"> &nbsp; _3D Model_ </a> 
+
+
+ 
+<!--------- Video --------->
+<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Clapper%20Board.webp" alt="Clapper Board" width="35" />
+
+https://github.com/ShahramShakiba/ThreeJS-Basic/assets/110089830/0c0b0c6b-43ab-487d-a707-2a12f2a07b04
+
 
   <br/> 
 
